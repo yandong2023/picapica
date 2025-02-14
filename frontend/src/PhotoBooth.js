@@ -5,6 +5,7 @@ const PhotoBooth = () => {
   const canvasRef = useRef(null);
   const [capturedImages, setCapturedImages] = useState([]); // Holds multiple images
   const [filter, setFilter] = useState("none");
+  const [countdown, setCountdown] = useState(0); // Holds countdown value
 
   const startCamera = async () => {
     try {
@@ -15,6 +16,21 @@ const PhotoBooth = () => {
     } catch (error) {
       console.error("Error accessing camera:", error);
     }
+  };
+
+  const startCountdown = () => {
+    let timeLeft = 3; // Set countdown duration (3 seconds)
+    setCountdown(timeLeft);
+
+    const timer = setInterval(() => {
+      timeLeft -= 1;
+      setCountdown(timeLeft);
+
+      if (timeLeft === 0) {
+        clearInterval(timer);
+        capturePhoto(); // Capture the photo when countdown reaches 0
+      }
+    }, 1000);
   };
 
   const capturePhoto = () => {
@@ -41,20 +57,19 @@ const PhotoBooth = () => {
       <video ref={videoRef} autoPlay className="video-feed" />
       <canvas ref={canvasRef} className="hidden" />
 
+      {/* Countdown display */}
+      {countdown > 0 && <h2 className="countdown">Capture in {countdown}...</h2>}
+
       <div className="controls">
         <button onClick={startCamera}>Start Camera</button>
-        <button onClick={capturePhoto}>Capture</button>
+        <button onClick={startCountdown}>Capture</button>
       </div>
 
       {/* Display up to 4 captured images */}
-      <div className="image-grid">
-        {capturedImages.length > 0 ? (
-          capturedImages.map((image, index) => (
-            <img key={index} src={image} alt={`Captured ${index + 1}`} className="captured-photo" />
-          ))
-        ) : (
-          <p>No photos captured yet</p>
-        )}
+      <div className="photo-strip">
+        {capturedImages.map((image, index) => (
+          <img key={index} src={image} alt={`Captured ${index + 1}`} className="captured-photo" />
+        ))}
       </div>
 
       <div className="filters">
@@ -62,7 +77,7 @@ const PhotoBooth = () => {
         <button onClick={() => setFilter("grayscale(100%)")}>Grayscale</button>
         <button onClick={() => setFilter("sepia(100%)")}>Sepia</button>
       </div>
-    </div> // ✅ Closing main parent div
+    </div>
   );
 };
 
