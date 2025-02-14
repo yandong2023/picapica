@@ -9,3 +9,10 @@
   padding: 10px 20px;
   border-radius: 10px;
 }
+
+.video-feed {
+  width: 500%;
+  border-radius: 10px;
+  border: 2px solid #000;
+  transform: scaleX(-1);
+}
