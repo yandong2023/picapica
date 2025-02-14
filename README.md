@@ -13,6 +13,11 @@ A simple web-based photo booth application built with **React** that captures im
 -**Rendering:** HTML5 Canvas
 
 ## 📥 Installation
+**Prerequisites**
+- Node.js & npm installed on your system
+- A modern web browser
+
+**Steps to run locally**
 ```sh
 # Clone the repository
 git clone https://github.com/Agneswei/photobooth-app.git
