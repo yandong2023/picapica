@@ -44,6 +44,7 @@ npm start
 - Add AI-powered enhacements (background removal)
 - Allow users to share strips directly to social media
 - video fram record before countdown and during, make into a "video strip" along with the photo strip
+- make into a website
 
 ### 📜 License
 MIT License © 2025 Your Name
