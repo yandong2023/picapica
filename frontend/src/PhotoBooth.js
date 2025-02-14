@@ -65,6 +65,16 @@ const PhotoBooth = () => {
       context.filter = filter;
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
+      // Mirror image on downloaded strip
+      context.save();
+      context.scale(-1, 1);
+      context.translate(-canvas.width, 0);
+
+      context.filter
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      context.restore();
+
       const imageUrl = canvas.toDataURL("image/png");
       setCapturedImages((prevImages) => {
         const updatedImages = [...prevImages, imageUrl]; // Append new image at end
@@ -134,7 +144,6 @@ const PhotoBooth = () => {
 
   return (
     <div className="photo-booth">
-      <h1>PhotoBooth App 📸</h1>
 
       {countdown !== null && <h2 className="countdown">{countdown}</h2>}
 
