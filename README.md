@@ -20,7 +20,7 @@ A simple web-based photo booth application built with **React** that captures im
 **Steps to run locally**
 ```sh
 # Clone the repository
-git clone https://github.com/Agneswei/photobooth-app.git
+git clone https://github.com/Agneswei/photobooth.git
 cd photobooth-app
 
 # Install dependencies
