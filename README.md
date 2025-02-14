@@ -1,6 +1,6 @@
-# PizelBooth 📸
+# PixelBooth 📸
 
-A simple web-based photo booth application built with **React** that captures images using a webcam, applies filters, and generates a downloadable photo strip!
+A simple web-based photo booth application built with **React** that captures images using a webcam applies filters, and generates a downloadable photo strip!
 
 ## 🚀 Features
 - Capture 4 photos automatically with a countdown timer (3,2,1... snap!)
