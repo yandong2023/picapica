@@ -51,6 +51,60 @@ const PhotoBooth = () => {
     }
   };
 
+  const downloadPhotoStrip = () => {
+    if (capturedImages.length === 0) return;
+
+    const imgWidth = 400; // Image width
+    const imgHeight = 300; // Image height per photo
+    const borderSize = 30; // White border around the strip
+    const spacing = 20; // Space between photos
+    const textHeight = 50; // Extra space for text at the bottom
+
+    // Calculate total height based on image count
+    const totalHeight = (imgHeight * capturedImages.length) + (spacing * (capturedImages.length - 1)) + (borderSize * 2) + textHeight;
+
+    // Create a canvas
+    const stripCanvas = document.createElement("canvas");
+    const ctx = stripCanvas.getContext("2d");
+
+    // Set proper width & height
+    stripCanvas.width = imgWidth + (borderSize * 2); 
+    stripCanvas.height = totalHeight;
+
+    // Set background color to white
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, stripCanvas.width, stripCanvas.height);
+
+    // Draw each image in a vertical stack
+    let loadedImages = 0;
+    capturedImages.forEach((image, index) => {
+        const yPos = borderSize + (imgHeight + spacing) * index;
+        const xPos = borderSize;
+
+        const img = new Image();
+        img.src = image;
+        img.onload = () => {
+            ctx.drawImage(img, xPos, yPos, imgWidth, imgHeight);
+            loadedImages++;
+
+            // If all images are loaded, finalize the image and trigger download
+            if (loadedImages === capturedImages.length) {
+                ctx.fillStyle = "#000000"; // Black text
+                ctx.font = "20px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText("PhotoBooth - " + new Date().toLocaleDateString(), stripCanvas.width / 2, stripCanvas.height - 20);
+
+                // Convert canvas to an image and download
+                const link = document.createElement("a");
+                link.download = "photobooth.png";
+                link.href = stripCanvas.toDataURL("image/png");
+                link.click();
+            }
+        };
+    });
+};
+
+
   return (
     <div className="photo-booth">
       <h1>PhotoBooth App 📸</h1>
@@ -65,7 +119,7 @@ const PhotoBooth = () => {
         <button onClick={startCountdown}>Capture</button>
       </div>
 
-      {/* Display up to 4 captured images */}
+      {/* Display up to 4 captured images in a vertical strip */}
       <div className="photo-strip">
         {capturedImages.map((image, index) => (
           <img key={index} src={image} alt={`Captured ${index + 1}`} className="captured-photo" />
@@ -77,8 +131,12 @@ const PhotoBooth = () => {
         <button onClick={() => setFilter("grayscale(100%)")}>Grayscale</button>
         <button onClick={() => setFilter("sepia(100%)")}>Sepia</button>
       </div>
+
+      {/* Download button */}
+      <button onClick={downloadPhotoStrip}>Download Photo Strip</button>
     </div>
   );
 };
 
 export default PhotoBooth;
+
