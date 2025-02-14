@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 const PhotoBooth = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [capturedImage, setCapturedImage] = useState(null);
+  const [capturedImages, setCapturedImages] = useState([]); // Holds multiple images
   const [filter, setFilter] = useState("none");
 
   const startCamera = async () => {
@@ -26,35 +26,43 @@ const PhotoBooth = () => {
       canvas.height = video.videoHeight;
       context.filter = filter;
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      setCapturedImage(canvas.toDataURL("image/png"));
-    }
-  };
 
-  const downloadPhoto = () => {
-    if (capturedImage) {
-      const link = document.createElement("a");
-      link.href = capturedImage;
-      link.download = "photo.png";
-      link.click();
+      const imageUrl = canvas.toDataURL("image/png");
+      setCapturedImages((prevImages) => {
+        const updatedImages = [imageUrl, ...prevImages];
+        return updatedImages.slice(0, 4); // Keep only the last 4 images
+      });
     }
   };
 
   return (
     <div className="photo-booth">
+      <h1>PhotoBooth App 📸</h1>
       <video ref={videoRef} autoPlay className="video-feed" />
       <canvas ref={canvasRef} className="hidden" />
+
       <div className="controls">
         <button onClick={startCamera}>Start Camera</button>
         <button onClick={capturePhoto}>Capture</button>
-        {capturedImage && <button onClick={downloadPhoto}>Download</button>}
       </div>
-      {capturedImage && <img src={capturedImage} alt="Captured" />}
+
+      {/* Display up to 4 captured images */}
+      <div className="image-grid">
+        {capturedImages.length > 0 ? (
+          capturedImages.map((image, index) => (
+            <img key={index} src={image} alt={`Captured ${index + 1}`} className="captured-photo" />
+          ))
+        ) : (
+          <p>No photos captured yet</p>
+        )}
+      </div>
+
       <div className="filters">
         <button onClick={() => setFilter("none")}>No Filter</button>
         <button onClick={() => setFilter("grayscale(100%)")}>Grayscale</button>
         <button onClick={() => setFilter("sepia(100%)")}>Sepia</button>
       </div>
-    </div>
+    </div> // ✅ Closing main parent div
   );
 };
 
