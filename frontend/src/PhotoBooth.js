@@ -1,13 +1,20 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 const PhotoBooth = () => {
-  const [showCamera, setShowCamera] = useState(false); // Controls home screen vs. camera screen
+  const [showCamera, setShowCamera] = useState(false);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [capturedImages, setCapturedImages] = useState([]);
   const [filter, setFilter] = useState("none");
   const [countdown, setCountdown] = useState(null);
-  const [capturing, setCapturing] = useState(false); // FIX: Boolean, not array
+  const [capturing, setCapturing] = useState(false);
+
+  // Automatically start the camera when photobooth is opened
+  useEffect(() => {
+    if (showCamera) {
+      startCamera();
+    }
+  }, [showCamera]);
 
   // Start Camera
   const startCamera = async () => {
@@ -23,7 +30,7 @@ const PhotoBooth = () => {
 
   // Countdown to take 4 pictures automatically
   const startCountdown = () => {
-    if (capturing) return; // Prevent multiple captures at once
+    if (capturing) return;
     setCapturing(true);
 
     let photosTaken = 0;
@@ -46,12 +53,12 @@ const PhotoBooth = () => {
           clearInterval(timer);
           capturePhoto();
           photosTaken += 1;
-          setTimeout(captureSequence, 1000); // Wait 1 second before next countdown
+          setTimeout(captureSequence, 1000);
         }
       }, 1000);
     };
 
-    captureSequence(); // Start the countdown sequence
+    captureSequence();
   };
 
   // Capture Photo
@@ -65,20 +72,10 @@ const PhotoBooth = () => {
       context.filter = filter;
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      // Mirror image on downloaded strip
-      context.save();
-      context.scale(-1, 1);
-      context.translate(-canvas.width, 0);
-
-      context.filter
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      context.restore();
-
       const imageUrl = canvas.toDataURL("image/png");
       setCapturedImages((prevImages) => {
-        const updatedImages = [...prevImages, imageUrl]; // Append new image at end
-        return updatedImages.slice(-4); // Keep only last 4 images
+        const updatedImages = [...prevImages, imageUrl];
+        return updatedImages.slice(-4);
       });
     }
   };
@@ -88,6 +85,14 @@ const PhotoBooth = () => {
     setCapturedImages([]);
     setCountdown(null);
     setCapturing(false);
+
+    if (videoRef.current && videoRef.current.srcObject) {
+      let stream = videoRef.current.srcObject;
+      let tracks = stream.getTracks();
+      tracks.forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+    }
+    setShowCamera(false); // Go back to home screen
   };
 
   // Download Photo Strip
@@ -144,7 +149,6 @@ const PhotoBooth = () => {
 
   return (
     <div className="photo-booth">
-
       {countdown !== null && <h2 className="countdown">{countdown}</h2>}
 
       <div className="main-container">
@@ -157,20 +161,16 @@ const PhotoBooth = () => {
         <div className="camera-container">
           <video ref={videoRef} autoPlay className="video-feed" />
           <canvas ref={canvasRef} className="hidden" />
-
           <div className="controls">
-            <button onClick={startCamera}>Start Camera</button>
-            <button onClick={startCountdown} disabled={capturing}>Capture 4 Photos</button>
+            <button onClick={startCountdown} disabled={capturing}>Start Capture</button>
             <button onClick={resetPhotoBooth}>Reset</button>
+            <button onClick={downloadPhotoStrip} disabled={capturedImages.length === 0}>Download Photo Strip</button>
           </div>
-
           <div className="filters">
             <button onClick={() => setFilter("none")}>No Filter</button>
             <button onClick={() => setFilter("grayscale(100%)")}>Grayscale</button>
             <button onClick={() => setFilter("sepia(100%)")}>Sepia</button>
           </div>
-
-          <button onClick={downloadPhotoStrip}>Download Photo Strip</button>
         </div>
       </div>
     </div>
@@ -178,3 +178,4 @@ const PhotoBooth = () => {
 };
 
 export default PhotoBooth;
+
