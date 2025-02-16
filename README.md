@@ -1,15 +1,15 @@
 # PixelBooth 📸
 
-A simple web-based photo booth application built with **React** that captures images using a webcam applies filters, and generates a downloadable photo strip!
+A simple web-based photo booth application built with **React** that captures images using a webcam, applies filters, and generates a downloadable photo strip!
 
 ## 🚀 Features
-- Capture 4 photos automatically with a countdown timer (3,2,1... snap!)
-- Apply filters (**b&w**,**sepia**, or **none**) (more to come!)
-- Display captures photos in a **vertical strip** and **download** the png with a timestamp
+- **Automatic Photo Capture: Capture a series of 4 photos with an integrated countdown timer
+- Filter Application: Choose from various filters, including b&w and sepia to enhance your photos.
+- Photo Strip Generation: Display captured photos in a vertical strip format and download them as a PNG file with a timestaml.
 
 ## 🛠 Tech Stack
 -**Frontend:** React
--**Media API:** WebRTC
+-**Media API:** WebRTC API
 -**Rendering:** HTML5 Canvas
 
 ## 📥 Installation
@@ -20,8 +20,8 @@ A simple web-based photo booth application built with **React** that captures im
 **Steps to run locally**
 ```sh
 # Clone the repository
-git clone https://github.com/Agneswei/photobooth.git
-cd photobooth-app
+git clone https://github.com/Agneswei/Boothify.git
+cd Boothify/frontend
 
 # Install dependencies
 npm install
@@ -32,19 +32,17 @@ npm start
 
 # 📸 Usage
 1. **Run the app** (`npm start`) and open `http://localhost:3000`
-2. **Click "Start"** to ender the camera view
-3. **Start the camera**
-4. **Click "Capture 4 photos"** to begin the countdown
-5. **View the captured images** 
-6. **Download the strip** or **rest** to restart!
-
+2. **Start the camera"** Click on the "Start" button to enable your webcam.
+3. **Capture Photos:** Press the "Capture 4 photos" button to initiate the countdown and photo capture sequence.
+4. **Apply Filters:** Select your desired filter to enhance the photos.
+5. **Download Photo Strip:** Once captured, click the "Download" button to save the photo strip to your device. 
 ## 🔧 Future Improvements
 - Add more filters (beautify, cute filters)
-- Implement fram customization (stickers, colors, frame designs)
-- Add AI-powered enhacements (background removal)
+- Implement frame customization (stickers and frame designs)
+- Add AI-powered enhancements (background removal/blur)
 - Allow users to share strips directly to social media
-- video fram record before countdown and during, make into a "video strip" along with the photo strip
-- make into a website
+- video frame record before countdown and during, make into a "video strip" along with the photo strip
+
 
 ### 📜 License
 MIT License © 2025 Agnes Wei
