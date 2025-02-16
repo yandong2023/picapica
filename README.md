@@ -8,9 +8,9 @@ A simple web-based photo booth application built with **React** that captures im
 - Photo Strip Generation: Display captured photos in a vertical strip format and download them as a PNG file with a timestamp.
 
 ## 🛠 Tech Stack
--**Frontend:** React
--**Media API:** WebRTC API
--**Rendering:** HTML5 Canvas
+- **Frontend:** React
+- **Media API:** WebRTC API
+- **Rendering:** HTML5 Canvas
 
 ## 📥 Installation
 **Prerequisites**
