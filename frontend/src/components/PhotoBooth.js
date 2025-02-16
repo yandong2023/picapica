@@ -40,7 +40,8 @@ const PhotoBooth = ({ setCapturedImages }) => {
       if (photosTaken >= 4) {
         setCountdown(null);
         setCapturing(false);
-        setCapturedImages(newCapturedImages);
+        setCapturedImages((prevImages) => [...prevImages, ...newCapturedImages].slice(-4));
+        setImages((prevImages) => [...prevImages, ...newCapturedImages].slice(-4)); 
         navigate("/preview");
         return;
       }
@@ -55,7 +56,10 @@ const PhotoBooth = ({ setCapturedImages }) => {
         if (timeLeft === 0) {
           clearInterval(timer);
           const imageUrl = capturePhoto();
-          if (imageUrl) newCapturedImages.push(imageUrl);
+          if (imageUrl) {
+            newCapturedImages.push(imageUrl);
+            setImages((prevImages) => [...prevImages, imageUrl]);
+          }
           photosTaken += 1;
           setTimeout(captureSequence, 1000);
         }
@@ -77,7 +81,6 @@ const PhotoBooth = ({ setCapturedImages }) => {
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       const imageUrl = canvas.toDataURL("image/png");
-      setImages((prevImages) => [...prevImages, imageUrl].slice(-4));
       return imageUrl;
     }
   };
@@ -86,10 +89,19 @@ const PhotoBooth = ({ setCapturedImages }) => {
     <div className="photo-booth">
       {countdown !== null && <h2 className="countdown">{countdown}</h2>}
 
-      <div className="camera-container">
-        <video ref={videoRef} autoPlay className="video-feed" />
-        <canvas ref={canvasRef} className="hidden" />
+      <div className="photo-container">
+        <div className="camera-container">
+          <video ref={videoRef} autoPlay className="video-feed" />
+          <canvas ref={canvasRef} className="hidden" />
+        </div>
+
+        <div className="preview-side">
+          {capturedImages.map((image, index) => (
+            <img key={index} src={image} alt={`Captured ${index + 1}`} className="side-preview" />
+          ))}
+        </div>
       </div>
+      
 
       <div className="controls">
         <button onClick={startCountdown} disabled={capturing}>Start Capture :)</button>
@@ -102,7 +114,7 @@ const PhotoBooth = ({ setCapturedImages }) => {
       </div>
     </div>
   );
-}; // ✅ Ensure all brackets are closed correctly
+};
 
-// ✅ `export default` is at the top level (outside any function)
+
 export default PhotoBooth;
