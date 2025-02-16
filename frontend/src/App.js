@@ -1,13 +1,18 @@
-import React from "react";
-import PhotoBooth from "./PhotoBooth"; // Import your photo booth component
-import "./App.css"; // Component styles
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PhotoBooth from "./PhotoBooth";
+import PhotoPreview from "./PhotoPreview";
 
 function App() {
+  const [capturedImages, setCapturedImages] = useState([]);
+
   return (
-    <div className="app">
-      <h1>PhotoBooth App 📸</h1>
-      <PhotoBooth />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<PhotoBooth setCapturedImages={setCapturedImages} />} />
+        <Route path="/preview" element={<PhotoPreview capturedImages={capturedImages} />} />
+      </Routes>
+    </Router>
   );
 }
 
