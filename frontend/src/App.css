@@ -1,3 +1,4 @@
+/* Countdown Timer */
 .countdown {
   position: relative;
   text-align: center;
@@ -10,9 +11,96 @@
   border-radius: 10px;
 }
 
+/* Center everything */
+.photo-booth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Full viewport height */
+  text-align: center;
+}
+
+/* Ensure camera is centered */
+.camera-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px; /* Restrict max width */
+  margin: 20px auto; /* Auto centers */
+}
+
+/* Video feed styling */
 .video-feed {
-  width: 500%;
+  width: 100%;
+  max-width: 480px; /* Control video size */
+  height: auto;
   border-radius: 10px;
   border: 2px solid #000;
-  transform: scaleX(-1);
+  transform: scaleX(-1); /* Mirror effect */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Photo Strip Preview */
+.photo-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.photo-preview canvas {
+  max-width: 300px; /* Smaller photostrip */
+  width: 100%;
+  height: auto;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Corrected */
+  margin-top: 20px;
+}
+
+/* Center buttons */
+.controls, .filters {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  gap: 10px;
+}
+
+/* Button Styling */
+button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.color-options {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.color-options button {
+  width: 50px;
+  height: 30px;
+  border: 1px solid #000;
+  cursor: 
+  border-radius: 5px;
+}
+
+.color-options button:hover {
+  opacity: 0.8;
 }
