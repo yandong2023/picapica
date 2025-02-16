@@ -35,7 +35,10 @@ npm start
 2. **Start the camera"** Click the "Start" button to enable your webcam.
 3. **Capture Photos:** Press the "Capture 4 photos" button to initiate the countdown and photo capture sequence.
 4. **Apply Filters:** Select your desired filter to enhance the photos.
-5. **Download Photo Strip:** Once captured, click the "Download" button to save the photo strip to your device. 
+5. **Download Photo Strip:** Once captured, click the "Download" button to save the photo strip to your device.
+
+If you want to open it directly, click [here](https://picapicaa.netlify.app/).
+
 ## 🔧 Future Improvements
 - Add more filters (beautify, cute filters)
 - Implement frame customization (stickers and frame designs)
