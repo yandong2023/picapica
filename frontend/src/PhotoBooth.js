@@ -21,6 +21,7 @@ const PhotoBooth = ({ setCapturedImages }) => {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+        videoRef.current.style.transform = "scaleX(-1)"; // mirrored camera
       }
     } catch (error) {
       console.error("Error accessing camera:", error);
