@@ -1,11 +1,11 @@
-# PixelBooth 📸
+# Picapica 📸
 
 A simple web-based photo booth application built with **React** that captures images using a webcam, applies filters, and generates a downloadable photo strip!
 
 ## 🚀 Features
 - **Automatic Photo Capture: Capture a series of 4 photos with an integrated countdown timer
-- Filter Application: Choose from various filters, including b&w and sepia to enhance your photos.
-- Photo Strip Generation: Display captured photos in a vertical strip format and download them as a PNG file with a timestaml.
+- Filter Application: Choose from various filters, including B&W and sepia, to enhance your photos.
+- Photo Strip Generation: Display captured photos in a vertical strip format and download them as a PNG file with a timestamp.
 
 ## 🛠 Tech Stack
 -**Frontend:** React
@@ -32,7 +32,7 @@ npm start
 
 # 📸 Usage
 1. **Run the app** (`npm start`) and open `http://localhost:3000`
-2. **Start the camera"** Click on the "Start" button to enable your webcam.
+2. **Start the camera"** Click the "Start" button to enable your webcam.
 3. **Capture Photos:** Press the "Capture 4 photos" button to initiate the countdown and photo capture sequence.
 4. **Apply Filters:** Select your desired filter to enhance the photos.
 5. **Download Photo Strip:** Once captured, click the "Download" button to save the photo strip to your device. 
