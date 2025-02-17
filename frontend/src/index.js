@@ -1,11 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";  // Global styles
-import App from "./App"; // Main component
+import "./index.css";  
+import App from "./App"; 
+import { BrowserRouter as Router } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router basename="./picapica">
+      <App />
+    </Router>
   </React.StrictMode>,
   document.getElementById("root")
 );
