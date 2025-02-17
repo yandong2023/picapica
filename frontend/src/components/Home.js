@@ -12,7 +12,10 @@ const Home = () => {
       <footer>
         made by{" "}
         <a
-          href="https://agneswei.com" target="_blank" rel="noreferrer" style={{ color: "pink", textDecoration: "none" }}>agneswei</a>
+          href="https://agneswei.com" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          style={{ color: "pink", textDecoration: "none" }}>agneswei</a>
       </footer>
     </div>
   );
