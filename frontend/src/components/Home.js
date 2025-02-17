@@ -9,7 +9,11 @@ const Home = () => {
       <h1>pixelbooth</h1>
       <p>Welcome to Agnes' photobooth! This is your personal photobooth at home.</p>
       <button onClick={() => navigate("/welcome")}>START</button>
-      <footer>made by <span style={{ color: "pink" }}>agneswei</span></footer>
+      <footer>
+        made by{" "}
+        <a
+          href="https://agneswei.com" target="_blank" rel="noreferrer" style={{ color: "pink", textDecoration: "none" }}>agneswei</a>
+      </footer>
     </div>
   );
 };
