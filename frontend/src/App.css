@@ -9,31 +9,55 @@
   background: rgba(255, 255, 255, 0.8);
   padding: 10px 20px;
   border-radius: 10px;
+  animation: countdown-animation 0.5s ease-in-out alternate infinite;
 }
 
-/* photobooth layout */
+/* Photobooth Strip */
+.photobooth-strip {
+  display: block;
+  width: 180px;
+  margin: 10px auto;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Photobooth Layout */
 .photo-booth {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh; /* Full viewport height */
+  min-height: 100vh;
   text-align: center;
+  padding: 10px;
 }
 
 .camera-container {
-  flex: 0 0 auto;
-  width: 480px;
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  display: flex;
+  justify-content: center;
 }
 
-/* Video feed styling */
+/* Video Feed Styling */
 .video-feed {
+  transform: scaleX(-1); /* Mirrors video */
+  object-fit: cover; /* Fixes stretching issue */
+  display: block;
   width: 100%;
   max-width: 480px;
   height: auto;
   border-radius: 10px;
-  border: 2px solid #000;
+  border: 2px solid black;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* Animation */
+.animate {
+  animation: pop 0.5s ease-in-out alternate infinite;
 }
 
 /* Photo Strip Preview */
@@ -48,14 +72,14 @@
 }
 
 .photo-preview canvas {
-  max-width: 200px; /* Smaller photostrip */
+  max-width: 200px;
   width: 100%;
   height: auto;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Corrected */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   margin-top: 20px;
 }
 
-/* Center buttons */
+/* Center Buttons */
 .controls, .filters {
   display: flex;
   justify-content: center;
@@ -79,9 +103,10 @@ button {
 button:hover {
   background: black !important;
   color: white !important;
+  transform: scale(1.05);
 }
 
-/* Color picker options */
+/* Color Picker Options */
 .color-options {
   display: flex;
   justify-content: center;
@@ -89,7 +114,7 @@ button:hover {
   margin-top: 15px;
 }
 
-/* photo container layout */
+/* Photo Container Layout */
 .photo-container {
   display: flex;
   flex-direction: row;
@@ -101,8 +126,7 @@ button:hover {
   margin: 0 auto;
 }
 
-
-
+/* Preview Side */
 .preview-side {
   display: flex;
   flex-direction: column;
@@ -121,7 +145,90 @@ button:hover {
   margin-bottom: 10px;
 }
 
-/* hide captured image under camera */
+/* Hide Captured Image Under Camera */
 .hidden {
   display: none !important;
+}
+
+/* Footer Styling */
+footer {
+  display: block;
+  padding: 10px;
+  background: transparent;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+/* Footer Link */
+footer a {
+  color: pink;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 16px;
+  border: 2px solid pink;
+  border-radius: 20px;
+  padding: 5px 15px;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Ensure the Footer Stays at the Bottom */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Fix Horizontal Scrolling Issue */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .camera-container {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .video-feed {
+    width: 100%;
+    height: auto;
+    max-height: 350px; /* Prevents video from covering buttons */
+  }
+
+  .photo-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .controls button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+}
+
+
+/* Animations */
+@keyframes pop {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.2); opacity: 0.8; }
+}
+
+@keyframes countdown-animation {
+  from { opacity: 1; }
+  to { opacity: 0.5; }
 }
