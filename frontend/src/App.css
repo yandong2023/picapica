@@ -42,15 +42,13 @@
 
 /* Video Feed Styling */
 .video-feed {
-  transform: scaleX(-1); /* Mirrors video */
-  object-fit: cover; /* Fixes stretching issue */
-  display: block;
   width: 100%;
   max-width: 480px;
   height: auto;
   border-radius: 10px;
   border: 2px solid black;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  object-fit: cover; /* Fixes weird stretching */
 }
 
 
@@ -206,7 +204,8 @@ html, body {
   .video-feed {
     width: 100%;
     height: auto;
-    max-height: 350px; /* Prevents video from covering buttons */
+    max-height: 400px; /* Prevents video from covering buttons */
+    object-fit: cover;
   }
 
   .photo-container {
