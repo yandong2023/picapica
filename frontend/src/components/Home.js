@@ -6,8 +6,11 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <h1>pixelbooth</h1>
+      <h1>picapica</h1>
       <p>Welcome to Agnes' photobooth! This is your personal photobooth at home.</p>
+      
+      <img src="/photobooth-strip.png" alt="photobooth strip" className="photobooth-strip"/>
+      
       <button onClick={() => navigate("/welcome")}>START</button>
       <footer>
         made by{" "}
