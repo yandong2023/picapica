@@ -10,18 +10,39 @@ const PhotoBooth = ({ setCapturedImages }) => {
   const [countdown, setCountdown] = useState(null);
   const [capturing, setCapturing] = useState(false);
 
-  // Automatically start the camera when the component mounts
   useEffect(() => {
     startCamera();
+
+    // Restart camera when user returns to the page
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        startCamera();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   // Start Camera
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const constraints = {
+        video: { 
+          facingMode: "user", // Front camera
+          width: { ideal: 640 },
+          height: { ideal: 480 }
+        }
+      };
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+  
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.style.transform = "scaleX(-1)"; // mirrored camera
+        videoRef.current.play();
       }
     } catch (error) {
       console.error("Error accessing camera:", error);
@@ -77,6 +98,10 @@ const PhotoBooth = ({ setCapturedImages }) => {
       const context = canvas.getContext("2d");
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
+      
+      // Flip the captured image (mirroring)
+      context.translate(canvas.width, 0);
+      context.scale(-1, 1);
       context.filter = filter;
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
@@ -87,11 +112,11 @@ const PhotoBooth = ({ setCapturedImages }) => {
 
   return (
     <div className="photo-booth">
-      {countdown !== null && <h2 className="countdown">{countdown}</h2>}
+      {countdown !== null && <h2 className="countdown animate">{countdown}</h2>}
 
       <div className="photo-container">
         <div className="camera-container">
-          <video ref={videoRef} autoPlay className="video-feed" />
+          <video ref={videoRef} autoPlay playsInline className="video-feed" style={{filter}} />
           <canvas ref={canvasRef} className="hidden" />
         </div>
 
@@ -101,10 +126,9 @@ const PhotoBooth = ({ setCapturedImages }) => {
           ))}
         </div>
       </div>
-      
 
       <div className="controls">
-        <button onClick={startCountdown} disabled={capturing}>Start Capture :)</button>
+        <button onClick={startCountdown} disabled={capturing}>{capturing ? "Capturing..." : "Start Capture :)"}</button>
       </div>
 
       <div className="filters">
@@ -115,6 +139,5 @@ const PhotoBooth = ({ setCapturedImages }) => {
     </div>
   );
 };
-
 
 export default PhotoBooth;
