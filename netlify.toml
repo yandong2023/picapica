@@ -1,0 +1,10 @@
+[build]
+command = "npm run build"
+publish = "frontend/build"
+base = "frontend"
+
+[[redirects]]
+from = "/picapica/*"
+to = "/index.html"
+status = 200
+force = true
