@@ -10,14 +10,12 @@ function App() {
   const [capturedImages, setCapturedImages] = useState([]);
 
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/photobooth" element={<PhotoBooth setCapturedImages={setCapturedImages} />} />
         <Route path="/preview" element={<PhotoPreview capturedImages={capturedImages} />} />
       </Routes>
-    </Router>
   );
 }
 
