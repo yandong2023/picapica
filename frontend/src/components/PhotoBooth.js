@@ -10,9 +10,12 @@ const PhotoBooth = ({ setCapturedImages }) => {
   const [countdown, setCountdown] = useState(null);
   const [capturing, setCapturing] = useState(false);
 
+  // Detect if it's a mobile device
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
   useEffect(() => {
     startCamera();
-
+  
     // Restart camera when user returns to the page
     const handleVisibilityChange = () => {
       if (!document.hidden) {
@@ -21,7 +24,7 @@ const PhotoBooth = ({ setCapturedImages }) => {
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    
+
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
@@ -30,19 +33,24 @@ const PhotoBooth = ({ setCapturedImages }) => {
   // Start Camera
   const startCamera = async () => {
     try {
-      const constraints = {
-        video: { 
-          facingMode: "user", // Front camera
-          width: { ideal: 640 },
-          height: { ideal: 480 }
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: "user",
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
         }
-      };
+      });
 
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-  
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
+
+        // Only mirror video on laptops, not mobile devices
+        if (!isMobile) {
+          videoRef.current.style.transform = "scaleX(-1)";
+        } else {
+          videoRef.current.style.transform = "none";
+        }
       }
     } catch (error) {
       console.error("Error accessing camera:", error);
@@ -98,10 +106,6 @@ const PhotoBooth = ({ setCapturedImages }) => {
       const context = canvas.getContext("2d");
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      
-      // Flip the captured image (mirroring)
-      context.translate(canvas.width, 0);
-      context.scale(-1, 1);
       context.filter = filter;
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
@@ -116,7 +120,7 @@ const PhotoBooth = ({ setCapturedImages }) => {
 
       <div className="photo-container">
         <div className="camera-container">
-          <video ref={videoRef} autoPlay playsInline className="video-feed" style={{filter}} />
+          <video ref={videoRef} autoPlay className="video-feed" style={{ filter }} />
           <canvas ref={canvasRef} className="hidden" />
         </div>
 
@@ -126,9 +130,11 @@ const PhotoBooth = ({ setCapturedImages }) => {
           ))}
         </div>
       </div>
-
+      
       <div className="controls">
-        <button onClick={startCountdown} disabled={capturing}>{capturing ? "Capturing..." : "Start Capture :)"}</button>
+        <button onClick={startCountdown} disabled={capturing}>
+          {capturing ? "Capturing..." : "Start Capture :)"}
+        </button>
       </div>
 
       <div className="filters">
@@ -141,3 +147,4 @@ const PhotoBooth = ({ setCapturedImages }) => {
 };
 
 export default PhotoBooth;
+
