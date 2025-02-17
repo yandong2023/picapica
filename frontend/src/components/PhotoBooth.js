@@ -32,6 +32,10 @@ const PhotoBooth = ({ setCapturedImages }) => {
   // Start Camera
   const startCamera = async () => {
     try {
+        if (videoRef.current && videoRef.current.srcObject) {
+            return; // Prevent restarting the camera if it's already running
+        }
+
         const constraints = {
             video: {
                 facingMode: "user",
@@ -43,16 +47,17 @@ const PhotoBooth = ({ setCapturedImages }) => {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         if (videoRef.current) {
             videoRef.current.srcObject = stream;
-            videoRef.current.play();
-            
+            videoRef.current.play().catch(err => console.error("Error playing video:", err));
+
             // Fix mirroring issue
             videoRef.current.style.transform = "scaleX(-1)";
-            videoRef.current.style.objectFit = "cover"; // Ensures it doesn't stretch weirdly
+            videoRef.current.style.objectFit = "cover"; 
         }
     } catch (error) {
         console.error("Error accessing camera:", error);
     }
 };
+
 
   // Countdown to take 4 pictures automatically
   const startCountdown = () => {
