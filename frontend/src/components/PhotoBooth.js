@@ -16,46 +16,43 @@ const PhotoBooth = ({ setCapturedImages }) => {
   useEffect(() => {
     startCamera();
   
-    // Restart camera when user returns to the page
     const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        startCamera();
-      }
+        if (!document.hidden) {
+            startCamera();
+        }
     };
-
+  
     document.addEventListener("visibilitychange", handleVisibilityChange);
-
+    
     return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+        document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, []);
+}, []);
 
   // Start Camera
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: "user",
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
-        }
-      });
+        const constraints = {
+            video: {
+                facingMode: "user",
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            }
+        };
 
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-
-        // Only mirror video on laptops, not mobile devices
-        if (!isMobile) {
-          videoRef.current.style.transform = "scaleX(-1)";
-        } else {
-          videoRef.current.style.transform = "none";
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+            videoRef.current.play();
+            
+            // Fix mirroring issue
+            videoRef.current.style.transform = "scaleX(-1)";
+            videoRef.current.style.objectFit = "cover"; // Ensures it doesn't stretch weirdly
         }
-      }
     } catch (error) {
-      console.error("Error accessing camera:", error);
+        console.error("Error accessing camera:", error);
     }
-  };
+};
 
   // Countdown to take 4 pictures automatically
   const startCountdown = () => {
@@ -102,17 +99,37 @@ const PhotoBooth = ({ setCapturedImages }) => {
   const capturePhoto = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
-    if (video && canvas) {
-      const context = canvas.getContext("2d");
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      context.filter = filter;
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      const imageUrl = canvas.toDataURL("image/png");
-      return imageUrl;
+    if (video && canvas) {
+        const context = canvas.getContext("2d");
+
+        // Get the actual video dimensions
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
+
+        // Set a standard aspect ratio (4:3 or 16:9)
+        const aspectRatio = 4 / 3;
+        let canvasWidth = videoWidth;
+        let canvasHeight = videoWidth / aspectRatio;
+
+        // If height exceeds videoHeight, adjust
+        if (canvasHeight > videoHeight) {
+            canvasHeight = videoHeight;
+            canvasWidth = videoHeight * aspectRatio;
+        }
+
+        // Set canvas size
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+
+        // Capture frame
+        context.filter = filter;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const imageUrl = canvas.toDataURL("image/png");
+        return imageUrl;
     }
-  };
+};
 
   return (
     <div className="photo-booth">
