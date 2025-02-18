@@ -1,27 +1,37 @@
 # Picapica 📸
 
-A simple web-based photo booth application built with **React** that captures images using a webcam, applies filters, and generates a downloadable photo strip!
+A simple **web-based photo booth** application built with **React** that captures images using a webcam, applies filters, and generates a downloadable photo strip!
+
+### Where did the name come from?
+The name **Picapica** comes from a mix of:
+- **"Picture"** - representing photography and capturing moments.
+- The **Picapica** is the sound that cameras make.
+- **Pikachu's playful energy** - symbolizing the fun, fast, and energetic photos!
 
 ## 🚀 Features
-- **Automatic Photo Capture: Capture a series of 4 photos with an integrated countdown timer
-- Filter Application: Choose from various filters, including B&W and sepia, to enhance your photos.
-- Photo Strip Generation: Display captured photos in a vertical strip format and download them as a PNG file with a timestamp.
+- **Automatic Photo Capture:** Capture a series of **4 photos** with an integrated **countdown timer**.
+- **Filter Application:** Choose from various filters, including B&W and sepia, to enhance your photos.
+- **Photo Strip Generation:** Display captured photos in a vertical strip format and download them as a PNG file with a timestamp.
 
 ## 🛠 Tech Stack
-- **Frontend:** React
+- **Frontend:** React (with Hooks, Context API)
 - **Media API:** WebRTC API
-- **Rendering:** HTML5 Canvas
+- **Rendering & Image Processing:** HTML5 Canvas
+- **Styling:** CSS Modules
+- **Deployment:** Netlify
+
+---
 
 ## 📥 Installation
-**Prerequisites**
+### **Prerequisites**
 - Node.js & npm installed on your system
 - A modern web browser
 
 **Steps to run locally**
 ```sh
 # Clone the repository
-git clone https://github.com/Agneswei/Boothify.git
-cd Boothify/frontend
+git clone https://github.com/Agneswei/Picapica
+cd picapica/frontend
 
 # Install dependencies
 npm install
@@ -32,19 +42,19 @@ npm start
 
 # 📸 Usage
 1. **Run the app** (`npm start`) and open `http://localhost:3000`
-2. **Start the camera"** Click the "Start" button to enable your webcam.
-3. **Capture Photos:** Press the "Capture 4 photos" button to initiate the countdown and photo capture sequence.
-4. **Apply Filters:** Select your desired filter to enhance the photos.
-5. **Download Photo Strip:** Once captured, click the "Download" button to save the photo strip to your device.
+2. **Start the camera:** Click the "Start" button to enable your webcam.
+3. **Capture Photos:** Press the **"Capture 4 photos"** button to start the countdown and photo capture sequence.
+4. **Apply Filters:** Select a **filter** to enhance the photos.
+5. **Download Photo Strip:** Once captured, click the **"Download"** button to save the final **photo strip** to your device.
 
-If you want to open it directly, click [here](https://picapicaa.netlify.app/).
+**Try it out live:** [PicaPica](https://picapicaa.netlify.app/).
 
 ## 🔧 Future Improvements
-- Add more filters (beautify, cute filters)
-- Implement frame customization (stickers and frame designs)
-- Add AI-powered enhancements (background removal/blur)
+- Add more filters (beautify, cute effects, and stickers)
+- Implement frame customization (stickers and themed frames)
+- Add AI-powered enhancements (background removal/blur, facial beautification)
 - Allow users to share strips directly to social media
-- video frame record before countdown and during, make into a "video strip" along with the photo strip
+- Capture a short video during the countdown and include it alongside the photo strip
 
 
 ### 📜 License
