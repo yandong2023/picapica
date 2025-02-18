@@ -19,13 +19,12 @@ const PhotoPreview = ({ capturedImages }) => {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
 
-    
-
-    const imgWidth = 310;  
-    const imgHeight = 190; 
-    const borderSize = 20;  
-    const photoSpacing = 10;  
-    const textHeight = 25;  // Adjusted text height
+  
+    const imgWidth = 400;  
+    const imgHeight = 300; 
+    const borderSize = 40;  
+    const photoSpacing = 20;  
+    const textHeight = 50;  
     const totalHeight = (imgHeight * 4) + (photoSpacing * 3) + (borderSize * 2) + textHeight;
 
     // Set canvas dimensions
@@ -43,9 +42,30 @@ const PhotoPreview = ({ capturedImages }) => {
       img.onload = () => {
         const yOffset = borderSize + (imgHeight + photoSpacing) * index;
 
-        // Draw image
-        ctx.drawImage(img, borderSize, yOffset, imgWidth, imgHeight);
+        const imageRatio = img.width / img.height;
+        const targetRatio = imgWidth / imgHeight;
 
+        let sourceWidth = img.width;
+        let sourceHeight = img.height;
+        let sourceX = 0;
+        let sourceY = 0;
+
+        if (imageRatio > targetRatio) {
+            // Image is wider - crop width
+            sourceWidth = sourceHeight * targetRatio;
+            sourceX = (img.width - sourceWidth) / 2;
+        } else {
+            // Image is taller - crop height
+            sourceHeight = sourceWidth / targetRatio;
+            sourceY = (img.height - sourceHeight) / 2;
+        }
+
+        // Draw image with proper cropping
+        ctx.drawImage(
+            img,
+            sourceX, sourceY, sourceWidth, sourceHeight,  // Source (cropping)
+            borderSize, yOffset, imgWidth, imgHeight      // Destination
+        );
         
         imagesLoaded++;
 
@@ -56,25 +76,35 @@ const PhotoPreview = ({ capturedImages }) => {
             month: '2-digit',
             day: '2-digit',
             year: 'numeric'
-          }) + '       ' + 
+          }) + '  ' + 
           now.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit',
-            second: '2-digit',
             hour12: true
           });
 
           // Set text style
           ctx.fillStyle = "#000000";
-          ctx.font = "16px Arial";
-          ctx.textAlign = "left";
+          ctx.font = "20px Arial";
+          ctx.textAlign = "center";
           
           // Position text at bottom left with padding
+          ctx.fillText("Picapica  " + timestamp, canvas.width / 2, totalHeight - borderSize * 1);
+
+
+          ctx.fillStyle = "rgba(0, 0, 0, 0.5)"; // Semi-transparent black
+          ctx.font = "12px Arial";  // Adjust font size
+          ctx.textAlign = "center";
+
+          // Draw copyright text at bottom right
           ctx.fillText(
-            "Picapica          " + timestamp,
-            borderSize,
-            totalHeight - borderSize
+              "© 2025 AW",
+              canvas.width - borderSize,
+              totalHeight - borderSize / 2
           );
+      
+
+
         }
       };
     });
