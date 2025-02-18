@@ -32,14 +32,14 @@ const PhotoBooth = ({ setCapturedImages }) => {
         if (videoRef.current && videoRef.current.srcObject) {
             return; // Prevent restarting the camera if it's already running
         }
-
         const constraints = {
-            video: {
-                facingMode: "user",
-                width: { ideal: 1280 },
-                height: { ideal: 720 }
-            }
-        };
+          video: {
+              facingMode: "user",
+              width: { ideal: 1920 },  // Set to Full HD
+              height: { ideal: 1080 },
+              frameRate: { ideal: 30 } // Keep a good frame rate
+          }
+      };
 
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         if (videoRef.current) {
@@ -113,11 +113,31 @@ const PhotoBooth = ({ setCapturedImages }) => {
     if (video && canvas) {
         const context = canvas.getContext("2d");
 
-        const videoWidth = video.videoWidth;
-        const videoHeight = video.videoHeight;
+        // Set fixed dimensions matching our photo strip
+        const targetWidth = 1280;
+        const targetHeight = 720;
 
-        canvas.width = videoWidth;
-        canvas.height = videoHeight;
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+
+        // Calculate the cropping to match what's displayed in video feed
+        const videoRatio = video.videoWidth / video.videoHeight;
+        const targetRatio = targetWidth / targetHeight;
+        
+        let drawWidth = video.videoWidth;
+        let drawHeight = video.videoHeight;
+        let startX = 0;
+        let startY = 0;
+
+        if (videoRatio > targetRatio) {
+            // Video is wider - crop width
+            drawWidth = drawHeight * targetRatio;
+            startX = (video.videoWidth - drawWidth) / 2;
+        } else {
+            // Video is taller - crop height
+            drawHeight = drawWidth / targetRatio;
+            startY = (video.videoHeight - drawHeight) / 2;
+        }
 
         // Flip canvas for mirroring
         context.save();
@@ -125,13 +145,23 @@ const PhotoBooth = ({ setCapturedImages }) => {
         context.scale(-1, 1);
 
         // Draw video frame onto canvas
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        context.drawImage(
+            video,
+            startX, startY, drawWidth, drawHeight,  // Source cropping
+            0, 0, targetWidth, targetHeight         // Destination size
+        );
         context.restore();
 
-        // Return image URL
+        // Apply filter if any
+        if (filter !== 'none') {
+            context.filter = filter;
+            context.drawImage(canvas, 0, 0);
+            context.filter = 'none';
+        }
+
         return canvas.toDataURL("image/png");
     }
-  };
+};
 
   return (
     <div className="photo-booth">
