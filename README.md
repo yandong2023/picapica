@@ -1,4 +1,6 @@
 # Picapica 📸
+![picapica](https://github.com/user-attachments/assets/5c6c59c7-c0a7-417b-991c-f40ea33fd48f)
+
 
 A simple **web-based photo booth** application built with **React** that captures images using a webcam, applies filters, and generates a downloadable photo strip!
 
@@ -43,7 +45,8 @@ npm install
 npm start
 ```
 
-# 📸 Usage
+
+## 📸 Usage
 1. **Run the app** (`npm start`) and open `http://localhost:3000`
 2. **Start the camera:** Click the "Start" button to enable your webcam.
 3. **Capture Photos:** Press the **"Capture 4 photos"** button to start the countdown and photo capture sequence.
