@@ -14,11 +14,11 @@
 
 /* Photobooth Strip */
 .photobooth-strip {
+  width: 150px; /* Adjust as needed */
+  max-width: 300px; /* Prevents it from being too large */
+  height: auto; /* Keeps the aspect ratio */
   display: block;
-  width: 180px;
-  margin: 10px auto;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 10px auto; /* Centers the image */
 }
 
 /* Photobooth Layout */
