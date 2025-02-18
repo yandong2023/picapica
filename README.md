@@ -8,6 +8,9 @@ The name **Picapica** comes from a mix of:
 - The **Picapica** is the sound that cameras make.
 - **Pikachu's playful energy** - symbolizing the fun, fast, and energetic photos!
 
+Just like Pikachu, **Picapica** brings a spark of excitement to your photos! ⚡✨
+
+
 ## 🚀 Features
 - **Automatic Photo Capture:** Capture a series of **4 photos** with an integrated **countdown timer**.
 - **Filter Application:** Choose from various filters, including B&W and sepia, to enhance your photos.
