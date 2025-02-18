@@ -10,9 +10,6 @@ const PhotoBooth = ({ setCapturedImages }) => {
   const [countdown, setCountdown] = useState(null);
   const [capturing, setCapturing] = useState(false);
 
-  // Detect if it's a mobile device
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
   useEffect(() => {
     startCamera();
   
@@ -27,7 +24,7 @@ const PhotoBooth = ({ setCapturedImages }) => {
     return () => {
         document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-}, []);
+  }, []);
 
   // Start Camera
   const startCamera = async () => {
@@ -56,45 +53,53 @@ const PhotoBooth = ({ setCapturedImages }) => {
     } catch (error) {
         console.error("Error accessing camera:", error);
     }
-};
-
+  };
 
   // Countdown to take 4 pictures automatically
   const startCountdown = () => {
     if (capturing) return;
     setCapturing(true);
-
+  
     let photosTaken = 0;
     const newCapturedImages = [];
+  
+    const captureSequence = async () => {
+        if (photosTaken >= 4) {
+            setCountdown(null);
+            setCapturing(false);
 
-    const captureSequence = () => {
-      if (photosTaken >= 4) {
-        setCountdown(null);
-        setCapturing(false);
-        setCapturedImages((prevImages) => [...prevImages, ...newCapturedImages].slice(-4));
-        setImages((prevImages) => [...prevImages, ...newCapturedImages].slice(-4)); 
-        navigate("/preview");
-        return;
-      }
+            try {
+                setCapturedImages([...newCapturedImages]);
+                setImages([...newCapturedImages]);
 
-      let timeLeft = 3;
-      setCountdown(timeLeft);
+                // Delay navigation slightly to ensure state update
+                setTimeout(() => {
+                    navigate("/preview");
+                }, 200);
+            } catch (error) {
+                console.error("Error navigating to preview:", error);
+            }
+            return;
+        }
 
-      const timer = setInterval(() => {
-        timeLeft -= 1;
+        let timeLeft = 3;
         setCountdown(timeLeft);
 
-        if (timeLeft === 0) {
-          clearInterval(timer);
-          const imageUrl = capturePhoto();
-          if (imageUrl) {
-            newCapturedImages.push(imageUrl);
-            setImages((prevImages) => [...prevImages, imageUrl]);
-          }
-          photosTaken += 1;
-          setTimeout(captureSequence, 1000);
-        }
-      }, 1000);
+        const timer = setInterval(() => {
+            timeLeft -= 1;
+            setCountdown(timeLeft);
+
+            if (timeLeft === 0) {
+                clearInterval(timer);
+                const imageUrl = capturePhoto();
+                if (imageUrl) {
+                    newCapturedImages.push(imageUrl);
+                    setImages((prevImages) => [...prevImages, imageUrl]);
+                }
+                photosTaken += 1;
+                setTimeout(captureSequence, 1000);
+            }
+        }, 1000);
     };
 
     captureSequence();
@@ -108,33 +113,25 @@ const PhotoBooth = ({ setCapturedImages }) => {
     if (video && canvas) {
         const context = canvas.getContext("2d");
 
-        // Get the actual video dimensions
         const videoWidth = video.videoWidth;
         const videoHeight = video.videoHeight;
 
-        // Set a standard aspect ratio (4:3 or 16:9)
-        const aspectRatio = 4 / 3;
-        let canvasWidth = videoWidth;
-        let canvasHeight = videoWidth / aspectRatio;
+        canvas.width = videoWidth;
+        canvas.height = videoHeight;
 
-        // If height exceeds videoHeight, adjust
-        if (canvasHeight > videoHeight) {
-            canvasHeight = videoHeight;
-            canvasWidth = videoHeight * aspectRatio;
-        }
+        // Flip canvas for mirroring
+        context.save();
+        context.translate(canvas.width, 0);
+        context.scale(-1, 1);
 
-        // Set canvas size
-        canvas.width = canvasWidth;
-        canvas.height = canvasHeight;
-
-        // Capture frame
-        context.filter = filter;
+        // Draw video frame onto canvas
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        context.restore();
 
-        const imageUrl = canvas.toDataURL("image/png");
-        return imageUrl;
+        // Return image URL
+        return canvas.toDataURL("image/png");
     }
-};
+  };
 
   return (
     <div className="photo-booth">
@@ -169,4 +166,3 @@ const PhotoBooth = ({ setCapturedImages }) => {
 };
 
 export default PhotoBooth;
-
