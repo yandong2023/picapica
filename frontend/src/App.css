@@ -37,18 +37,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  max-width: 600px;
-  height: 400px;
+  width: 600px;
+  max-width: 700px;
+  height: 450px;
   position: relative;
 }
 
-/* Video Feed Styling */
+/* live cam*/
 .video-feed {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  aspect-ratio: 4 / 3; /* Locks aspect ratio */
+  width: 600px;
+  height: 450px;
   object-fit: cover; /* Prevents weird stretching */
   transform: scaleX(-1); /* Mirror effect */
   border-radius: 10px;
@@ -68,7 +66,7 @@
   justify-content: center;
   text-align: center;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 0px;
 }
 
 .photo-preview canvas {
@@ -94,7 +92,8 @@
   max-width: 400px;
   width: 100%; 
   height: auto;
-  margin: 10px auto;
+  margin-top: -10px;
+  margin-bottom: 5px;
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 
