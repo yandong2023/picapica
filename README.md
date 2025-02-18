@@ -43,9 +43,10 @@ npm install
 
 # Start the development server
 npm start
+```
 
 
-# 📸 Usage
+## 📸 Usage
 1. **Run the app** (`npm start`) and open `http://localhost:3000`
 2. **Start the camera:** Click the "Start" button to enable your webcam.
 3. **Capture Photos:** Press the **"Capture 4 photos"** button to start the countdown and photo capture sequence.
