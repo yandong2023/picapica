@@ -8,9 +8,9 @@ const PhotoPreview = ({ capturedImages }) => {
 
   useEffect(() => {
     if (capturedImages.length === 4) {
-        setTimeout(() => {
-            generatePhotoStrip();
-        }, 100);
+      setTimeout(() => {
+        generatePhotoStrip();
+      }, 100);
     }
   }, [capturedImages, stripColor]);
 
@@ -19,13 +19,16 @@ const PhotoPreview = ({ capturedImages }) => {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
 
-    const imgWidth = 180; // Match photobooth-strip width
-    const imgHeight = imgWidth * (3 / 4); // Maintain aspect ratio 4:3
-    const borderSize = 20;
-    const spacing = 10;
-    const textHeight = 30; // Adjust for text placement
-    const totalHeight = (imgHeight + spacing) * capturedImages.length + borderSize * 2 + textHeight;
+    
 
+    const imgWidth = 310;  
+    const imgHeight = 190; 
+    const borderSize = 20;  
+    const photoSpacing = 10;  
+    const textHeight = 25;  // Adjusted text height
+    const totalHeight = (imgHeight * 4) + (photoSpacing * 3) + (borderSize * 2) + textHeight;
+
+    // Set canvas dimensions
     canvas.width = imgWidth + borderSize * 2;
     canvas.height = totalHeight;
 
@@ -35,19 +38,45 @@ const PhotoPreview = ({ capturedImages }) => {
 
     let imagesLoaded = 0;
     capturedImages.forEach((image, index) => {
-        const img = new Image();
-        img.src = image;
-        img.onload = () => {
-            ctx.drawImage(img, borderSize, borderSize + (imgHeight + spacing) * index, imgWidth, imgHeight);
-            imagesLoaded++;
+      const img = new Image();
+      img.src = image;
+      img.onload = () => {
+        const yOffset = borderSize + (imgHeight + photoSpacing) * index;
 
-            if (imagesLoaded === capturedImages.length) {
-                ctx.fillStyle = "#000000";
-                ctx.font = "14px Arial";
-                ctx.textAlign = "center";
-                ctx.fillText("PhotoBooth - " + new Date().toLocaleString(), canvas.width / 2, totalHeight - 10);
-            }
-        };
+        // Draw image
+        ctx.drawImage(img, borderSize, yOffset, imgWidth, imgHeight);
+
+        
+        imagesLoaded++;
+
+        if (imagesLoaded === capturedImages.length) {
+          // Format timestamp to match purple strip
+          const now = new Date();
+          const timestamp = now.toLocaleDateString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric'
+          }) + '       ' + 
+          now.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+          });
+
+          // Set text style
+          ctx.fillStyle = "#000000";
+          ctx.font = "16px Arial";
+          ctx.textAlign = "left";
+          
+          // Position text at bottom left with padding
+          ctx.fillText(
+            "Picapica          " + timestamp,
+            borderSize,
+            totalHeight - borderSize
+          );
+        }
+      };
     });
   };
 
