@@ -53,6 +53,8 @@
   border: 2px solid black;
 }
 
+
+
 /* Animation */
 .animate {
   animation: pop 0.5s ease-in-out alternate infinite;
