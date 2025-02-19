@@ -190,6 +190,7 @@ const PhotoBooth = ({ setCapturedImages }) => {
         <button onClick={() => setFilter("none")}>No Filter</button>
         <button onClick={() => setFilter("grayscale(100%)")}>Grayscale</button>
         <button onClick={() => setFilter("sepia(100%)")}>Sepia</button>
+        <button onClick={() => setFilter("grayscale(100%) contrast(120%) brightness(110%) sepia(30%) hue-rotate(10deg) blur(0.4px)")}>Vintage</button>
       </div>
     </div>
   );
