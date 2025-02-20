@@ -269,8 +269,8 @@ const PhotoPreview = ({ capturedImages }) => {
       </div>
 
       <div className="frame-options">
-        <button onClick={() => setSelectedFrame("pastel")}>Pastel Frame</button>
-        <button onClick={() => setSelectedFrame("cute")}>Cute Frame</button>
+        <button onClick={() => setSelectedFrame("pastel")}>Girlypop Stickers</button>
+        <button onClick={() => setSelectedFrame("cute")}>Cute Stickers</button>
       </div>
 
       <canvas ref={stripCanvasRef} className="photo-strip" />
