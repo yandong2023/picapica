@@ -30,14 +30,14 @@ const PhotoBooth = ({ setCapturedImages }) => {
   const startCamera = async () => {
     try {
         if (videoRef.current && videoRef.current.srcObject) {
-            return; // Prevent restarting the camera if it's already running
+            return; 
         }
         const constraints = {
           video: {
               facingMode: "user",
-              width: { ideal: 1920 },  // Set to Full HD
+              width: { ideal: 1920 }, 
               height: { ideal: 1080 },
-              frameRate: { ideal: 30 } // Keep a good frame rate
+              frameRate: { ideal: 30 } 
           }
       };
 
@@ -46,7 +46,6 @@ const PhotoBooth = ({ setCapturedImages }) => {
             videoRef.current.srcObject = stream;
             videoRef.current.play().catch(err => console.error("Error playing video:", err));
 
-            // Fix mirroring issue
             videoRef.current.style.transform = "scaleX(-1)";
             videoRef.current.style.objectFit = "cover"; 
         }
@@ -72,7 +71,6 @@ const PhotoBooth = ({ setCapturedImages }) => {
                 setCapturedImages([...newCapturedImages]);
                 setImages([...newCapturedImages]);
 
-                // Delay navigation slightly to ensure state update
                 setTimeout(() => {
                     navigate("/preview");
                 }, 200);
@@ -113,14 +111,12 @@ const PhotoBooth = ({ setCapturedImages }) => {
     if (video && canvas) {
         const context = canvas.getContext("2d");
 
-        // Set fixed dimensions matching our photo strip
         const targetWidth = 1280;
         const targetHeight = 720;
 
         canvas.width = targetWidth;
         canvas.height = targetHeight;
 
-        // Calculate the cropping to match what's displayed in video feed
         const videoRatio = video.videoWidth / video.videoHeight;
         const targetRatio = targetWidth / targetHeight;
         
@@ -130,11 +126,9 @@ const PhotoBooth = ({ setCapturedImages }) => {
         let startY = 0;
 
         if (videoRatio > targetRatio) {
-            // Video is wider - crop width
             drawWidth = drawHeight * targetRatio;
             startX = (video.videoWidth - drawWidth) / 2;
         } else {
-            // Video is taller - crop height
             drawHeight = drawWidth / targetRatio;
             startY = (video.videoHeight - drawHeight) / 2;
         }
@@ -144,15 +138,13 @@ const PhotoBooth = ({ setCapturedImages }) => {
         context.translate(canvas.width, 0);
         context.scale(-1, 1);
 
-        // Draw video frame onto canvas
         context.drawImage(
             video,
-            startX, startY, drawWidth, drawHeight,  // Source cropping
-            0, 0, targetWidth, targetHeight         // Destination size
+            startX, startY, drawWidth, drawHeight,  
+            0, 0, targetWidth, targetHeight        
         );
         context.restore();
 
-        // Apply filter if any
         if (filter !== 'none') {
             context.filter = filter;
             context.drawImage(canvas, 0, 0);
