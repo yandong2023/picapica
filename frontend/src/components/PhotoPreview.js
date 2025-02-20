@@ -7,7 +7,6 @@ const frames = {
   },
   pastel: {
     draw: (ctx, x, y, width, height) => {
-      // Draw corner decorations only, leaving the center clear
       const drawSticker = (x, y, type) => {
         switch(type) {
           case 'star':
@@ -85,7 +84,6 @@ const frames = {
   
   cute: {
     draw: (ctx, x, y, width, height) => {
-      // Draw stars and other decorations
       const drawStar = (centerX, centerY, size, color = "#FFD700") => {
         ctx.fillStyle = color;
         ctx.beginPath();
@@ -174,20 +172,17 @@ const PhotoPreview = ({ capturedImages }) => {
         let sourceY = 0;
 
         if (imageRatio > targetRatio) {
-            // Image is wider - crop width
             sourceWidth = sourceHeight * targetRatio;
             sourceX = (img.width - sourceWidth) / 2;
         } else {
-            // Image is taller - crop height
             sourceHeight = sourceWidth / targetRatio;
             sourceY = (img.height - sourceHeight) / 2;
         }
 
-        // Draw image with proper cropping
         ctx.drawImage(
             img,
-            sourceX, sourceY, sourceWidth, sourceHeight,  // Source (cropping)
-            borderSize, yOffset, imgWidth, imgHeight      // Destination
+            sourceX, sourceY, sourceWidth, sourceHeight, 
+            borderSize, yOffset, imgWidth, imgHeight      
         );
 
         if (frames[selectedFrame] && typeof frames[selectedFrame].draw === 'function') {
@@ -203,7 +198,6 @@ const PhotoPreview = ({ capturedImages }) => {
         imagesLoaded++;
 
         if (imagesLoaded === capturedImages.length) {
-          // Format timestamp to match purple strip
           const now = new Date();
           const timestamp = now.toLocaleDateString('en-US', {
             month: '2-digit',
@@ -216,20 +210,17 @@ const PhotoPreview = ({ capturedImages }) => {
             hour12: true
           });
 
-          // Set text style
           ctx.fillStyle = "#000000";
           ctx.font = "20px Arial";
           ctx.textAlign = "center";
           
-          // Position text at bottom left with padding
           ctx.fillText("Picapica  " + timestamp, canvas.width / 2, totalHeight - borderSize * 1);
 
 
-          ctx.fillStyle = "rgba(0, 0, 0, 0.5)"; // Semi-transparent black
-          ctx.font = "12px Arial";  // Adjust font size
+          ctx.fillStyle = "rgba(0, 0, 0, 0.5)"; 
+          ctx.font = "12px Arial";  
           ctx.textAlign = "center";
 
-          // Draw copyright text at bottom right
           ctx.fillText(
               "© 2025 AW",
               canvas.width - borderSize,
