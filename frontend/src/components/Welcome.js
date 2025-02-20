@@ -12,7 +12,7 @@ const Welcome = () => {
         This photobooth captures <strong>4 pictures</strong> in a row, so strike your best pose and have fun!
       </p>
       <p>
-        After the session, <span style={{ color: "pink" }}>download your digital copy</span> and share the fun!
+        After the session, <span style={{ color: "pink" }}></span> download your digital copy and share the fun!
       </p>
       <button onClick={() => navigate("/photobooth")}>START</button>
     </div>
