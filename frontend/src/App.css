@@ -1,3 +1,13 @@
+.background-gradient {
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(circle at center, rgba(255, 153, 178, 0.5) 20%, rgba(255, 240, 245, 0.9) 40%, rgba(255, 250, 250, 1) 70%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
 /* Countdown Timer */
 .countdown {
   position: relative;
@@ -119,18 +129,22 @@ button {
   background: transparent;
   color: black;
   border: 2px solid black;
-  border-radius: 20px;
-  padding: 10px 15px;
-  font-size: 16px;
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
-  background: black !important;
+  background: pink !important;
   color: white !important;
   transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.98);
 }
 
 /* Color Picker Options */
@@ -218,6 +232,10 @@ footer a:hover {
   text-align: center;
   min-height: 100vh;
   padding: 20px;
+}
+
+.home-container h1 {
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Fix Horizontal Scrolling Issue */
