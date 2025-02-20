@@ -17,7 +17,7 @@ const frames = {
             ctx.fill();
             break;
           case 'heart':
-            ctx.fillStyle = "#f2a4a6";
+            ctx.fillStyle = "#cc8084";
             ctx.beginPath();
             const heartSize = 22;
             ctx.moveTo(x, y + heartSize / 4);
@@ -46,7 +46,7 @@ const frames = {
             ctx.fill();
             break;
           case 'bow':
-            ctx.fillStyle = "#f2cdbe";
+            ctx.fillStyle = "#f9cee7";
             // Left loop
             ctx.beginPath();
             ctx.ellipse(x - 10, y, 10, 6, Math.PI / 4, 0, 2 * Math.PI);
@@ -56,7 +56,7 @@ const frames = {
             ctx.ellipse(x + 10, y, 10, 6, -Math.PI / 4, 0, 2 * Math.PI);
             ctx.fill();
             // Center knot
-            ctx.fillStyle = "#FF1493";
+            ctx.fillStyle = "#e68bbe";
             ctx.beginPath();
             ctx.arc(x, y, 4, 0, 2 * Math.PI);
             ctx.fill();
