@@ -1,5 +1,5 @@
 # Picapica 📸
-![picapica](https://github.com/user-attachments/assets/5c6c59c7-c0a7-417b-991c-f40ea33fd48f)
+![picapica](https://github.com/user-attachments/assets/4a6629c9-0c75-4a3a-a9f5-355712e2a372)
 
 
 A simple **web-based photo booth** application built with **React** that captures images using a webcam, applies filters, and generates a downloadable photo strip!
