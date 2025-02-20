@@ -134,6 +134,50 @@
 
 }
 
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center */
+  align-items: center;     /* Horizontally center */
+  text-align: center;
+  height: 100vh;           /* Full viewport height */
+  padding: 0 20px;
+  background: radial-gradient(circle, #ffc0cb 20%, #fff 80%);
+}
+
+.welcome-container h1 {
+  font-size: 3rem;
+  color: black;
+  margin-bottom: 1rem;
+}
+
+.welcome-container p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  max-width: 600px;
+  color: #000;
+}
+
+
+.welcome-container button {
+  margin-top: 1.5rem;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  border: 2px solid black;
+  border-radius: 25px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: center;
+  margin-left: 0px;
+  margin-top: 20px;
+}
+
+.welcome-container button:hover {
+  background-color: #ff69b4;
+  color: white;
+  transform: scale(1.05);
+}
 
 /* Fix Capture Button Placement */
 .controls {
@@ -258,8 +302,19 @@ footer a:hover {
   padding: 20px;
 }
 
+@keyframes titlePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
 .home-container h1 {
   font-family: 'Poppins', sans-serif;
+  font-size: 3rem;
+  margin: 0;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  animation: titlePulse 3s infinite ease-in-out;
+
 }
 
 /* Fix Horizontal Scrolling Issue */
