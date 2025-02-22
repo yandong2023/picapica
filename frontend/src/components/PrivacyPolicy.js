@@ -15,13 +15,6 @@ const PrivacyPolicy = () => {
       <p className="text-lg text-gray-700 mb-4">
       We respect your privacy and are committed to protecting it. No cookies or trackers are used on this site.
       </p>
-      <p className="text-lg text-gray-700">
-      If you have any questions, feel free to contact us by leaving a message at:{" "} 
-        <a 
-        href="https://agneswei.com"
-        target='_blank'
-        rel="noopener noreferrer"
-        style={{ color: "blue", textDecoration: "underline"}}>agneswei.com</a></p>
     </div>
     </div>
   );

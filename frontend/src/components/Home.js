@@ -25,6 +25,7 @@ const Home = () => {
             target="_blank" 
             rel="noopener noreferrer" 
             style={{ color: "pink", textDecoration: "none" }}>agneswei</a>
+             <p>© 2025 Agnes Wei. All Rights Reserved.</p>
         </footer>
       </div>
     </div>

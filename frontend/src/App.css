@@ -52,9 +52,87 @@
 
 
 .privacy-container a:hover {
-  color: #ff69b4; /* Pink hover effect */
+  color: pink; /* Pink hover effect */
   text-decoration: underline;
 }
+
+/* Contact */
+.contact-container {
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(circle at center, rgba(255, 153, 178, 0.5) 20%, rgba(255, 240, 245, 0.9) 40%, rgba(255, 250, 250, 1) 70%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  animation: pulse 5s infinite alternate ease-in-out;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Contact Form */
+.contact-form {
+  width: 400px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9); 
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.contact-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: 'Arial', sans-serif;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+.contact-form textarea {
+  height: 120px;
+  resize: none;
+}
+
+.contact-form button {
+  margin-top: 1.5rem;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  border: 2px solid black;
+  border-radius: 25px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: center;
+}
+
+.contact-form button:hover {
+  background-color: #ff69b4;
+  color: white;
+  transform: scale(1.05);
+}
+
+.status-message {
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: pink;
+}
+
 
 
 
@@ -459,6 +537,11 @@ html, body {
   .navbar a {
     padding: 10px;
     font-size: 1rem;
+  }
+
+  .contact-form {
+    width: 90%;
+    padding: 15px;
   }
 
 
