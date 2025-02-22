@@ -141,34 +141,27 @@ const PhotoBooth = ({ setCapturedImages }) => {
 				startY = (video.videoHeight - drawHeight) / 2;
 			}
 
-			// Flip canvas for mirror effect (selfie camera)
-			context.save();
-			context.translate(canvas.width, 0);
-			context.scale(-1, 1);
+        // Flip canvas for mirroring
+        context.save();
+        context.translate(canvas.width, 0);
+        context.scale(-1, 1);
 
-			context.drawImage(
-				video,
-				startX,
-				startY,
-				drawWidth,
-				drawHeight,
-				0,
-				0,
-				targetWidth,
-				targetHeight
-			);
-			context.restore();
+        context.drawImage(
+            video,
+            startX, startY, drawWidth, drawHeight,  
+            0, 0, targetWidth, targetHeight        
+        );
+        context.restore();
 
-			// apply filter
-			if (filter !== "none") {
-				context.filter = filter;
-				context.drawImage(canvas, 0, 0);
-				context.filter = "none";
-			}
+        if (filter !== 'none') {
+            context.filter = filter;
+            context.drawImage(canvas, 0, 0);
+            context.filter = 'none';
+        }
 
-			return canvas.toDataURL("image/png");
-		}
-	};
+        return canvas.toDataURL("image/png");
+    }
+};
 
 	return (
 		<div className="photo-booth">

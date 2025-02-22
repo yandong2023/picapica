@@ -20,6 +20,7 @@ Just like Pikachu, **Picapica** brings a spark of excitement to your photos! ⚡
 
 ## 🛠 Tech Stack
 - **Frontend:** React (with Hooks, Context API)
+- **Backend:** Node.js
 - **Media API:** WebRTC API
 - **Rendering & Image Processing:** HTML5 Canvas
 - **Styling:** CSS Modules

@@ -1,32 +1,161 @@
+.navbar {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  gap: 15px;
+  background-color: transparent;
+  padding: 8px 10px;
+  border-bottom: 2px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar a:hover {
+  background-color: #ddd;
+  border-radius: 20px;
+}
+
+.navbar a:active {
+  background-color: #ff69b4;
+  color: white;
+}
+
+/* Privacy Policy */
+.background-gradient {
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(circle at center, rgba(255, 153, 178, 0.5) 20%, rgba(255, 240, 245, 0.9) 40%, rgba(255, 250, 250, 1) 70%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  animation: pulse 5s infinite alternate ease-in-out;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.privacy-container h1 {
+  font-family: 'Poppins', sans-serif;
+}
+
+
+.privacy-container a:hover {
+  color: pink; /* Pink hover effect */
+  text-decoration: underline;
+}
+
+/* Contact */
+.contact-container {
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(circle at center, rgba(255, 153, 178, 0.5) 20%, rgba(255, 240, 245, 0.9) 40%, rgba(255, 250, 250, 1) 70%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  animation: pulse 5s infinite alternate ease-in-out;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Contact Form */
+.contact-form {
+  width: 400px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9); 
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.contact-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: 'Arial', sans-serif;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+.contact-form textarea {
+  height: 120px;
+  resize: none;
+}
+
+.contact-form button {
+  margin-top: 1.5rem;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  border: 2px solid black;
+  border-radius: 25px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: center;
+}
+
+.contact-form button:hover {
+  background-color: #ff69b4;
+  color: white;
+  transform: scale(1.05);
+}
+
+.status-message {
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: pink;
+}
+
+
+
+
 @keyframes pulse {
-	0% {
-		background-size: 100% 100%;
-	}
-	50% {
-		background-size: 130% 130%;
-	}
-	100% {
-		background-size: 100% 100%;
-	}
+  0% { background-size: 100% 100%; }
+  50% { background-size: 130% 130%; }
+  100% { background-size: 100% 100%; }
 }
 
 .background-gradient {
-	width: 100%;
-	height: 100vh;
-	background: radial-gradient(
-		circle at center,
-		rgba(255, 153, 178, 0.5) 20%,
-		rgba(255, 240, 245, 0.9) 40%,
-		rgba(255, 250, 250, 1) 70%
-	);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	overflow: hidden;
-	animation: pulse 5s infinite alternate ease-in-out;
-	background-repeat: no-repeat;
-	background-position: center;
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(circle at center, rgba(255, 153, 178, 0.5) 20%, rgba(255, 240, 245, 0.9) 40%, rgba(255, 250, 250, 1) 70%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  animation: pulse 5s infinite alternate ease-in-out;
+  background-repeat: no-repeat;
+  background-position: center;
+
 }
+
 
 .photobooth-strip {
 	border-radius: 12px;
@@ -380,13 +509,43 @@ body {
 		justify-content: center;
 	}
 
-	.controls button {
-		width: 90%;
-		padding: 12px;
-		font-size: 16px;
-		border-radius: 20px;
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-	}
+  .controls button {
+    width: 90%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .privacy-container {
+    padding: 20px;
+    width: 90%;
+  }
+
+  .privacy-container h1 {
+    font-size: 2rem;
+  }
+
+  .privacy-container p {
+    font-size: 1rem;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .navbar a {
+    padding: 10px;
+    font-size: 1rem;
+  }
+
+  .contact-form {
+    width: 90%;
+    padding: 15px;
+  }
+
+
 }
 
 /* Animations */

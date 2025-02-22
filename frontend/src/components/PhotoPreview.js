@@ -142,15 +142,20 @@ const PhotoPreview = ({ capturedImages }) => {
 				<button onClick={() => setStripColor("#FFF2CC")}>Yellow</button>
 				<button onClick={() => setStripColor("#dbcfff")}>Purple</button>
 			</div>
+      <div className="color-options">
+        <button onClick={() => setStripColor("white")}>White</button>
+        <button onClick={() => setStripColor("black")}>Black</button>
+        <button onClick={() => setStripColor("#f6d5da")}>Pink</button>
+        <button onClick={() => setStripColor("#dde6d5")}>Green</button>
+        <button onClick={() => setStripColor("#adc3e5")}>Blue</button>
+        <button onClick={() => setStripColor("#FFF2CC")}>Yellow</button>
+        <button onClick={() => setStripColor("#dbcfff")}>Purple</button>
+      </div>
 
-			<div className="frame-options">
-				<button onClick={() => setSelectedFrame("pastel")}>
-					Girlypop Stickers
-				</button>
-				<button onClick={() => setSelectedFrame("cute")}>
-					Cute Stickers
-				</button>
-			</div>
+      <div className="frame-options">
+        <button onClick={() => setSelectedFrame("pastel")}>Girlypop Stickers</button>
+        <button onClick={() => setSelectedFrame("cute")}>Cute Stickers</button>
+      </div>
 
 			<canvas ref={stripCanvasRef} className="photo-strip" />
 
