@@ -135,6 +135,7 @@ const PhotoBooth = ({ setCapturedImages }) => {
 
         // Flip canvas for mirroring
         context.save();
+        context.filter = filter !== 'none' ? filter : 'none';
         context.translate(canvas.width, 0);
         context.scale(-1, 1);
 
@@ -144,13 +145,7 @@ const PhotoBooth = ({ setCapturedImages }) => {
             0, 0, targetWidth, targetHeight        
         );
         context.restore();
-
-        if (filter !== 'none') {
-            context.filter = filter;
-            context.drawImage(canvas, 0, 0);
-            context.filter = 'none';
-        }
-
+        
         return canvas.toDataURL("image/png");
     }
 };
