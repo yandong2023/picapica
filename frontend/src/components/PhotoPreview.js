@@ -134,14 +134,6 @@ const PhotoPreview = ({ capturedImages }) => {
 		<div className="photo-preview">
 			<h2>Photo Strip Preview</h2>
 
-			<div className="color-options">
-				<button onClick={() => setStripColor("white")}>White</button>
-				<button onClick={() => setStripColor("#fceee9")}>Pink</button>
-				<button onClick={() => setStripColor("#dde6d5")}>Green</button>
-				<button onClick={() => setStripColor("#adc3e5")}>Blue</button>
-				<button onClick={() => setStripColor("#FFF2CC")}>Yellow</button>
-				<button onClick={() => setStripColor("#dbcfff")}>Purple</button>
-			</div>
       <div className="color-options">
         <button onClick={() => setStripColor("white")}>White</button>
         <button onClick={() => setStripColor("black")}>Black</button>
