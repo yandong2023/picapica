@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
+import photoboothStripImage from "../assets/photobooth-strip.png";
 
 const Logo = () => (
   <div className="logo">
@@ -119,7 +120,7 @@ const Home = ({ onShowTutorial }) => {
             </div>
           </div>
           <div className="hero-image">
-            <img src="/photobooth-strip.png" alt="PicapicaBooth photo strip example" className="main-demo-image" />
+            <img src={photoboothStripImage} alt="PicapicaBooth photo strip example" className="main-demo-image" />
           </div>
         </div>
       </section>
