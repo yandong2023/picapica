@@ -9,6 +9,11 @@ const PhotoBooth = ({ setCapturedImages }) => {
 	const [filter, setFilter] = useState("none");
 	const [countdown, setCountdown] = useState(null);
 	const [capturing, setCapturing] = useState(false);
+	
+	// Custom options
+	const [countdownTime, setCountdownTime] = useState(3); // Default 3 seconds
+	const [photoCount, setPhotoCount] = useState(4); // Default 4 photos
+	const [showSettings, setShowSettings] = useState(false); // Control settings panel display
 
 	useEffect(() => {
 		startCamera();
@@ -60,17 +65,33 @@ const PhotoBooth = ({ setCapturedImages }) => {
 		}
 	};
 
-	// Countdown to take 4 pictures automatically
+	// Toggle settings panel display
+	const toggleSettings = () => {
+		setShowSettings(!showSettings);
+	};
+
+	// Update countdown time
+	const handleCountdownChange = (e) => {
+		setCountdownTime(parseInt(e.target.value));
+	};
+
+	// Update photo count
+	const handlePhotoCountChange = (e) => {
+		setPhotoCount(parseInt(e.target.value));
+	};
+
+	// Countdown to take photos automatically
 	const startCountdown = () => {
 		if (capturing) return;
 		setCapturing(true);
+		setShowSettings(false); // Hide settings panel when starting to take photos
 
 		let photosTaken = 0;
 		const newCapturedImages = [];
 
 		const captureSequence = async () => {
 			// push captured images to preview
-			if (photosTaken >= 4) {
+			if (photosTaken >= photoCount) {
 				setCountdown(null);
 				setCapturing(false);
 
@@ -87,7 +108,7 @@ const PhotoBooth = ({ setCapturedImages }) => {
 				return;
 			}
 
-			let timeLeft = 3;
+			let timeLeft = countdownTime;
 			setCountdown(timeLeft);
 
 			const timer = setInterval(() => {
@@ -191,33 +212,60 @@ const PhotoBooth = ({ setCapturedImages }) => {
 			</div>
 
 			<div className="controls">
-				<button onClick={startCountdown} disabled={capturing}>
-					{capturing ? "Capturing..." : "Start Capture :)"}
-				</button>
+				{!capturing && (
+					<>
+						<button onClick={toggleSettings} className="settings-button">
+							{showSettings ? "Hide Settings" : "Photo Settings"}
+						</button>
+						<button onClick={startCountdown} className="capture-button">
+							Start Capture
+						</button>
+					</>
+				)}
+				{capturing && <div className="capturing-text">Capturing...</div>}
 			</div>
+
+			{showSettings && !capturing && (
+				<div className="settings-panel">
+					<div className="setting-item">
+						<label htmlFor="countdown-time">Countdown Time (seconds):</label>
+						<select 
+							id="countdown-time" 
+							value={countdownTime} 
+							onChange={handleCountdownChange}
+							className="setting-select"
+						>
+							<option value="3">3 seconds</option>
+							<option value="5">5 seconds</option>
+							<option value="10">10 seconds</option>
+						</select>
+					</div>
+					
+					<div className="setting-item">
+						<label htmlFor="photo-count">Number of Photos:</label>
+						<select 
+							id="photo-count" 
+							value={photoCount} 
+							onChange={handlePhotoCountChange}
+							className="setting-select"
+						>
+							<option value="2">2 photos</option>
+							<option value="4">4 photos</option>
+							<option value="6">6 photos</option>
+						</select>
+					</div>
+				</div>
+			)}
 
 			<div className="filters">
 				<button onClick={() => setFilter("none")}>No Filter</button>
 				<button onClick={() => setFilter("grayscale(100%)")}>Grayscale</button>
 				<button onClick={() => setFilter("sepia(100%)")}>Sepia</button>
-				<button
-					onClick={() =>
-						setFilter(
-							"grayscale(100%) contrast(120%) brightness(110%) sepia(30%) hue-rotate(10deg) blur(0.4px)"
-						)
-					}
-				>
-					Vintage
-				</button>
-				<button
-					onClick={() =>
-						setFilter(
-							"brightness(130%) contrast(105%) saturate(80%) blur(0.3px)"
-						)
-					}
-				>
-					Soft
-				</button>
+				<button onClick={() => setFilter("contrast(150%)")}>High Contrast</button>
+				<button onClick={() => setFilter("brightness(150%)")}>Bright</button>
+				<button onClick={() => setFilter("hue-rotate(90deg)")}>Hue Shift</button>
+				<button onClick={() => setFilter("invert(100%)")}>Invert</button>
+				<button onClick={() => setFilter("saturate(200%)")}>Saturate</button>
 			</div>
 		</div>
 	);

@@ -18,6 +18,20 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
+// Add root path handler
+app.get("/", (req, res) => {
+  res.json({
+    status: "success",
+    message: "PicapicaBooth API Server is running",
+    endpoints: [
+      { path: "/upload", method: "POST", description: "Upload photos to PicapicaBooth" },
+      { path: "/images", method: "GET", description: "Get list of uploaded photos" },
+      { path: "/send-message", method: "POST", description: "Send message or feedback" }
+    ],
+    frontendUrl: "http://localhost:3000"
+  });
+});
+
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: "uploads/",
@@ -79,7 +93,6 @@ app.post("/send-message", async (req, res) => {
 
 console.log("Loaded Email:", process.env.EMAIL);
 console.log("Loaded App Password:", process.env.EMAIL_PASS ? "Loaded Successfully" : "Not Loaded");
-
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
