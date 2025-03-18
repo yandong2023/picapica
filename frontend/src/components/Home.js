@@ -326,9 +326,7 @@ const Home = ({ onShowTutorial }) => {
           </div>
           <div className="footer-bottom">
             <p>&copy; 2025 PicapicaBooth. All Rights Reserved.</p>
-            <p>
-              Created by <a href="https://agneswei.com" target="_blank" rel="noopener noreferrer">Agnes Wei</a>
-            </p>
+    
           </div>
         </div>
       </footer>
