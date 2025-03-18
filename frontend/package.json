@@ -1,4 +1,7 @@
 {
+  "name": "picapicabooth-frontend",
+  "version": "1.0.0",
+  "private": true,
   "devDependencies": {
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.2",
@@ -8,7 +11,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "vercel-build": "npm install && npm run build"
   },
   "dependencies": {
     "axios": "^1.7.9",
