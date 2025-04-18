@@ -1,13 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.c36099ec.css",
-    "main.js": "/static/js/main.9ddfa329.js",
+    "main.css": "/static/css/main.8098ac46.css",
+    "main.js": "/static/js/main.3de7387b.js",
+    "static/media/photobooth-strip.png": "/static/media/photobooth-strip.b61e7047ed19df56ae19.png",
     "index.html": "/index.html",
-    "main.c36099ec.css.map": "/static/css/main.c36099ec.css.map",
-    "main.9ddfa329.js.map": "/static/js/main.9ddfa329.js.map"
+    "main.8098ac46.css.map": "/static/css/main.8098ac46.css.map",
+    "main.3de7387b.js.map": "/static/js/main.3de7387b.js.map"
   },
   "entrypoints": [
-    "static/css/main.c36099ec.css",
-    "static/js/main.9ddfa329.js"
+    "static/css/main.8098ac46.css",
+    "static/js/main.3de7387b.js"
   ]
 }

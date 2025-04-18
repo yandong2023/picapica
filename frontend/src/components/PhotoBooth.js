@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 const PhotoBooth = ({ setCapturedImages }) => {
@@ -9,11 +9,15 @@ const PhotoBooth = ({ setCapturedImages }) => {
 	const [filter, setFilter] = useState("none");
 	const [countdown, setCountdown] = useState(null);
 	const [capturing, setCapturing] = useState(false);
+	const [lightCondition, setLightCondition] = useState('normal'); // 'dark', 'normal', 'bright'
+	const [recommendedFilter, setRecommendedFilter] = useState(null);
+	const [showRecommendation, setShowRecommendation] = useState(false);
 	
 	// Custom options
 	const [countdownTime, setCountdownTime] = useState(3); // Default 3 seconds
 	const [photoCount, setPhotoCount] = useState(4); // Default 4 photos
 	const [showSettings, setShowSettings] = useState(false); // Control settings panel display
+	const [filterMode, setFilterMode] = useState('standard'); // 'standard', 'professional', 'artistic'
 
 	useEffect(() => {
 		startCamera();
@@ -30,6 +34,53 @@ const PhotoBooth = ({ setCapturedImages }) => {
 			document.removeEventListener("visibilitychange", handleVisibilityChange);
 		};
 	}, []);
+
+	// Analyze light conditions in the video stream
+	const analyzeLightConditions = useCallback(() => {
+		if (!videoRef.current) return;
+		
+		const canvas = document.createElement('canvas');
+		const context = canvas.getContext('2d');
+		canvas.width = 50; // Small sample for performance
+		canvas.height = 50;
+		
+		context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+		const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+		const data = imageData.data;
+		
+		// Calculate average brightness
+		let sum = 0;
+		for (let i = 0; i < data.length; i += 4) {
+			// Convert RGB to brightness using perceived luminance formula
+			sum += (data[i] * 0.299 + data[i+1] * 0.587 + data[i+2] * 0.114);
+		}
+		const avgBrightness = sum / (data.length / 4);
+		
+		// Determine light condition based on brightness
+		let newCondition;
+		let newRecommendation;
+		
+		if (avgBrightness < 60) {
+			newCondition = 'dark';
+			newRecommendation = 'brightness(150%)';
+		} else if (avgBrightness > 180) {
+			newCondition = 'bright';
+			newRecommendation = 'contrast(120%) saturate(90%)';
+		} else {
+			newCondition = 'normal';
+			newRecommendation = 'saturate(110%)';
+		}
+		
+		// Only update if condition changed
+		if (newCondition !== lightCondition) {
+			setLightCondition(newCondition);
+			setRecommendedFilter(newRecommendation);
+			setShowRecommendation(true);
+			
+			// Auto-hide recommendation after 8 seconds
+			setTimeout(() => setShowRecommendation(false), 8000);
+		}
+	}, [lightCondition]);
 
 	// Start Camera
 	const startCamera = async () => {
@@ -57,6 +108,10 @@ const PhotoBooth = ({ setCapturedImages }) => {
 				// mirror video stream
 				videoRef.current.style.transform = "scaleX(-1)";
 				videoRef.current.style.objectFit = "cover";
+				
+				// Start light analysis after camera is ready
+				const analysisInterval = setInterval(analyzeLightConditions, 3000);
+				return () => clearInterval(analysisInterval);
 			}
 		} catch (error) {
 			if (error.name == "NotAllowedError") {
@@ -186,6 +241,10 @@ const PhotoBooth = ({ setCapturedImages }) => {
 
 	return (
 		<div className="photo-booth">
+			<div className="booth-header">
+				<h1>PicapicaBooth - Free Online Photo Booth</h1>
+				{!capturing && <p className="instruction-text">Adjust your settings, select a filter, and click "Start Capture" to create your PicapicaBooth photo strip!</p>}
+			</div>
 			{countdown !== null && <h2 className="countdown animate">{countdown}</h2>}
 
 			<div className="photo-container">
@@ -215,20 +274,21 @@ const PhotoBooth = ({ setCapturedImages }) => {
 				{!capturing && (
 					<>
 						<button onClick={toggleSettings} className="settings-button">
-							{showSettings ? "Hide Settings" : "Photo Settings"}
+							<i className="fas fa-cog"></i> {showSettings ? "Hide Settings" : "Photo Settings"}
 						</button>
-						<button onClick={startCountdown} className="capture-button">
-							Start Capture
+						<button onClick={startCountdown} className="capture-button pulse-animation">
+							<i className="fas fa-camera"></i> Start Capture
 						</button>
 					</>
 				)}
-				{capturing && <div className="capturing-text">Capturing...</div>}
+				{capturing && <div className="capturing-text"><i className="fas fa-spinner fa-spin"></i> Capturing your PicapicaBooth photos...</div>}
 			</div>
 
 			{showSettings && !capturing && (
 				<div className="settings-panel">
+					<h3><i className="fas fa-sliders-h"></i> PicapicaBooth Settings</h3>
 					<div className="setting-item">
-						<label htmlFor="countdown-time">Countdown Time (seconds):</label>
+						<label htmlFor="countdown-time"><i className="fas fa-clock"></i> Countdown Time:</label>
 						<select 
 							id="countdown-time" 
 							value={countdownTime} 
@@ -242,7 +302,7 @@ const PhotoBooth = ({ setCapturedImages }) => {
 					</div>
 					
 					<div className="setting-item">
-						<label htmlFor="photo-count">Number of Photos:</label>
+						<label htmlFor="photo-count"><i className="fas fa-images"></i> Number of Photos:</label>
 						<select 
 							id="photo-count" 
 							value={photoCount} 
@@ -254,18 +314,94 @@ const PhotoBooth = ({ setCapturedImages }) => {
 							<option value="6">6 photos</option>
 						</select>
 					</div>
+					<p className="settings-tip">Tip: Selecting more photos creates a richer PicapicaBooth photo strip!</p>
 				</div>
 			)}
 
-			<div className="filters">
-				<button onClick={() => setFilter("none")}>No Filter</button>
-				<button onClick={() => setFilter("grayscale(100%)")}>Grayscale</button>
-				<button onClick={() => setFilter("sepia(100%)")}>Sepia</button>
-				<button onClick={() => setFilter("contrast(150%)")}>High Contrast</button>
-				<button onClick={() => setFilter("brightness(150%)")}>Bright</button>
-				<button onClick={() => setFilter("hue-rotate(90deg)")}>Hue Shift</button>
-				<button onClick={() => setFilter("invert(100%)")}>Invert</button>
-				<button onClick={() => setFilter("saturate(200%)")}>Saturate</button>
+			{showRecommendation && (
+				<div className="smart-recommendation">
+					<div className="recommendation-content">
+						<i className="fas fa-lightbulb"></i>
+						<div className="recommendation-text">
+							<p>PicapicaBooth smart detection: {lightCondition === 'dark' ? 'low light' : lightCondition === 'bright' ? 'bright light' : 'normal light'}</p>
+							<p>Recommended filter for best results</p>
+						</div>
+						<button onClick={() => {
+							setFilter(recommendedFilter);
+							setShowRecommendation(false);
+						}} className="apply-recommendation">Apply Recommendation</button>
+						<button onClick={() => setShowRecommendation(false)} className="dismiss-recommendation">
+							<i className="fas fa-times"></i>
+						</button>
+					</div>
+				</div>
+			)}
+			
+			<div className="filters-section">
+				<div className="filter-mode-selector">
+					<button 
+						className={filterMode === 'standard' ? 'active' : ''}
+						onClick={() => setFilterMode('standard')}
+					>
+						<i className="fas fa-camera"></i> Standard Filters
+					</button>
+					<button 
+						className={filterMode === 'professional' ? 'active' : ''}
+						onClick={() => setFilterMode('professional')}
+					>
+						<i className="fas fa-camera-retro"></i> Professional Filters
+					</button>
+					<button 
+						className={filterMode === 'artistic' ? 'active' : ''}
+						onClick={() => setFilterMode('artistic')}
+					>
+						<i className="fas fa-palette"></i> Artistic Filters
+					</button>
+				</div>
+				
+				<h3>
+					<i className="fas fa-magic"></i> 
+					{filterMode === 'standard' ? 'Choose Standard Filters' : 
+					 filterMode === 'professional' ? 'Choose Professional Filters' : 'Choose Artistic Filters'}
+				</h3>
+				
+				{filterMode === 'standard' && (
+					<div className="filters">
+						<button className={filter === "none" ? "active" : ""} onClick={() => setFilter("none")}>
+							<span className="filter-preview"></span>No Filter
+						</button>
+						<button className={filter === "grayscale(100%)" ? "active" : ""} onClick={() => setFilter("grayscale(100%)")}>Grayscale</button>
+						<button className={filter === "sepia(100%)" ? "active" : ""} onClick={() => setFilter("sepia(100%)")}>Sepia</button>
+						<button className={filter === "contrast(150%)" ? "active" : ""} onClick={() => setFilter("contrast(150%)")}>High Contrast</button>
+						<button className={filter === "brightness(150%)" ? "active" : ""} onClick={() => setFilter("brightness(150%)")}>Bright</button>
+					</div>
+				)}
+				
+				{filterMode === 'professional' && (
+					<div className="filters">
+						<button className={filter === "contrast(110%) brightness(110%) saturate(120%)" ? "active" : ""} 
+							onClick={() => setFilter("contrast(110%) brightness(110%) saturate(120%)")}>Portrait Enhance</button>
+						<button className={filter === "contrast(120%) brightness(90%) saturate(105%)" ? "active" : ""} 
+							onClick={() => setFilter("contrast(120%) brightness(90%) saturate(105%)")}>Dramatic Light</button>
+						<button className={filter === "grayscale(100%) contrast(120%) brightness(120%)" ? "active" : ""} 
+							onClick={() => setFilter("grayscale(100%) contrast(120%) brightness(120%)")}>Advanced B&W</button>
+						<button className={filter === "sepia(50%) contrast(110%) brightness(105%) saturate(120%)" ? "active" : ""} 
+							onClick={() => setFilter("sepia(50%) contrast(110%) brightness(105%) saturate(120%)")}>Film Look</button>
+					</div>
+				)}
+				
+				{filterMode === 'artistic' && (
+					<div className="filters">
+						<button className={filter === "hue-rotate(180deg) saturate(200%)" ? "active" : ""} 
+							onClick={() => setFilter("hue-rotate(180deg) saturate(200%)")}>Dreamy Blue</button>
+						<button className={filter === "sepia(80%) hue-rotate(50deg) saturate(140%)" ? "active" : ""} 
+							onClick={() => setFilter("sepia(80%) hue-rotate(50deg) saturate(140%)")}>Vintage Green</button>
+						<button className={filter === "invert(80%)" ? "active" : ""} 
+							onClick={() => setFilter("invert(80%)")}>Negative</button>
+						<button className={filter === "grayscale(100%) brightness(40%) contrast(180%)" ? "active" : ""} 
+							onClick={() => setFilter("grayscale(100%) brightness(40%) contrast(180%)")}>Dark Mood</button>
+					</div>
+				)}
 			</div>
 		</div>
 	);

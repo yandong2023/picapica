@@ -5,33 +5,35 @@ import '../App.css';
 const Tutorial = ({ onComplete }) => {
   const [step, setStep] = useState(0);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   
-  // Tutorial steps content
+  // Tutorial steps content with reliable image URLs
   const steps = [
     {
       title: 'Welcome to PicapicaBooth!',
       content: 'Join over 300,000 monthly users who create amazing photo memories with PicapicaBooth. This quick tutorial will show you how to get started.',
-      image: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'
+      image: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80'
     },
     {
       title: 'Step 1: Start Your Camera',
       content: 'Click the "Photo Settings" button to customize your experience, then "Start Capture" to activate your camera. PicapicaBooth will ask for permission to use your camera.',
-      image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'
+      image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80'
     },
     {
       title: 'Step 2: Customize Your Session',
       content: 'Set your countdown timer and choose how many photos you want to take. PicapicaBooth lets you personalize your photo session completely!',
-      image: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'
+      image: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80'
     },
     {
       title: 'Step 3: Get Creative with Filters',
       content: 'Apply fun filters to your photos! PicapicaBooth offers various options like Grayscale, Sepia, High Contrast, and more to make your photos stand out.',
-      image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'
+      image: 'https://images.unsplash.com/photo-1533158326339-7f3cf2404354?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80'
     },
     {
       title: 'Step 4: Share Your Memories',
       content: 'Save your photo strip or share it directly to social media. PicapicaBooth makes it easy to share your memories with friends and family worldwide!',
-      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'
+      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80'
     }
   ];
 
@@ -66,6 +68,23 @@ const Tutorial = ({ onComplete }) => {
     if (onComplete) onComplete();
   };
 
+  // Reset image states when step changes
+  useEffect(() => {
+    setImageLoaded(false);
+    setImageError(false);
+  }, [step]);
+
+  // Handle image load success
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+    setImageError(false);
+  };
+
+  // Handle image load error
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   // If tutorial is not shown, return null
   if (!showTutorial) return null;
 
@@ -79,15 +98,24 @@ const Tutorial = ({ onComplete }) => {
         
         <div className="tutorial-content">
           <div className="tutorial-image">
-            {steps[step].image ? (
-              <img 
-                src={steps[step].image} 
-                alt={`PicapicaBooth Tutorial - ${steps[step].title}`}
-                className="tutorial-img" 
-              />
-            ) : (
+            <img 
+              src={steps[step].image} 
+              alt={`PicapicaBooth Tutorial - ${steps[step].title}`}
+              className={`tutorial-img ${imageLoaded ? 'loaded' : 'loading'}`}
+              onLoad={handleImageLoad}
+              onError={handleImageError}
+              loading="eager"
+              style={{ opacity: imageLoaded ? 1 : 0.3, transition: 'opacity 0.3s ease' }}
+            />
+            {!imageLoaded && (
+              <div className="image-loading-indicator">
+                <div className="spinner"></div>
+                <span>Loading PicapicaBooth tutorial...</span>
+              </div>
+            )}
+            {imageError && (
               <div className="placeholder-image">
-                <span>Step {step+1} Image</span>
+                <span>PicapicaBooth Tutorial - Step {step+1}</span>
               </div>
             )}
           </div>

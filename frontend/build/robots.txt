@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# 允许所有搜索引擎爬取所有内容
+Disallow: /api/
+Disallow: /admin/
+
+# 网站地图
+Sitemap: https://picapicabooth.app/sitemap.xml

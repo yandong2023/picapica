@@ -106,9 +106,9 @@ const Home = ({ onShowTutorial }) => {
       <section className="hero-section">
         <div className="container">
           <div className="hero-content">
-            <h1>Create Beautiful Photo Strips with our <span className="highlight">Online Photo Booth</span></h1>
+            <h1>Create Beautiful Photo Strips with <span className="highlight">PicapicaBooth</span></h1>
             <p className="hero-description">
-              PicapicaBooth lets you easily capture, edit, and share stunning photos without professional equipment, anytime, anywhere.
+              PicapicaBooth lets you easily capture, edit, and share stunning photos without professional equipment, anytime, anywhere. Join over 300,000 monthly users creating amazing memories!
             </p>
             <div className="hero-buttons">
               <button onClick={handleGetStarted} className="btn btn-primary">
@@ -253,7 +253,7 @@ const Home = ({ onShowTutorial }) => {
           <div className="faq-container">
             <div className="faq-item">
               <h3>Is PicapicaBooth free to use?</h3>
-              <p>Yes, PicapicaBooth's basic features are completely free. We provide high-quality photo capture, editing, and sharing functionality at no cost.</p>
+              <p>Yes, PicapicaBooth is completely free to use. Our online photo booth provides high-quality photo capture, editing, and sharing functionality at no cost.</p>
             </div>
             <div className="faq-item">
               <h3>Do I need to install any software?</h3>
@@ -265,7 +265,7 @@ const Home = ({ onShowTutorial }) => {
             </div>
             <div className="faq-item">
               <h3>Does PicapicaBooth support mobile devices?</h3>
-              <p>Yes, PicapicaBooth fully supports mobile devices. You can use the front camera on your smartphone or tablet to take and edit photos.</p>
+              <p>Yes, PicapicaBooth fully supports mobile devices. Our photo booth allows you to use the front camera on your smartphone or tablet to take and edit photos.</p>
             </div>
           </div>
         </div>
@@ -275,7 +275,7 @@ const Home = ({ onShowTutorial }) => {
       <section className="cta-section">
         <div className="container">
           <div className="cta-content">
-            <h2>Ready to Create Your Photo Strip?</h2>
+            <h2>Ready to Create Your Photo Strip with PicapicaBooth?</h2>
             <p>Start using PicapicaBooth now to capture and share your amazing moments!</p>
             <button onClick={handleGetStarted} className="btn btn-primary btn-large">
               Get Started <i className="fas fa-arrow-right"></i>
@@ -290,7 +290,7 @@ const Home = ({ onShowTutorial }) => {
           <div className="footer-content">
             <div className="footer-brand">
               <h3>PicapicaBooth</h3>
-              <p>Create beautiful photo strips with our online photo booth tool</p>
+              <p>Create beautiful photo strips with our online photo booth</p>
               <div className="social-links">
                 <a href="#" target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook"></i></a>
                 <a href="#" target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter"></i></a>

@@ -1,22 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" type="image/x-icon" />
+    <link rel="canonical" href="https://picapicabooth.app" />
+    <link rel="alternate" hreflang="en" href="https://picapicabooth.app/en" />
+    <link rel="alternate" hreflang="zh" href="https://picapicabooth.app/zh" />
+    <link rel="alternate" hreflang="x-default" href="https://picapicabooth.app" />
     <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/logo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="theme-color" content="#FF6B9D" />
     <meta
       name="description"
-      content="Create beautiful photo strips instantly with PicapicaBooth - Your professional online photo booth. Capture, edit, and share stunning photos anytime, anywhere."
+      content="Create beautiful photo strips for FREE with PicapicaBooth - Your professional Picapica Booth online. Capture, edit, and share stunning photos with Picapica Booth anytime, anywhere."
     />
+    <meta name="keywords" content="picapica, photo booth, picapicabooth, picapica booth, free photo booth, digital photo strip, online photo booth, 在线照相亭, 免费照相亭, 照片条, 数码照片" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
-    <title>PicapicaBooth - Create Beautiful Photo Strips Online</title>
+    <title>PicapicaBooth - Free Online Photo Booth | Create Beautiful Photo Strips</title>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZYPZP7M1G8"></script>
     <script>
@@ -25,9 +32,72 @@
         gtag('js', new Date());
         gtag('config', 'G-ZYPZP7M1G8');
     </script>
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "PicapicaBooth",
+      "alternateName": "Picapica Booth",
+      "url": "https://picapicabooth.app",
+      "description": "Create beautiful photo strips instantly with PicapicaBooth - Your professional Picapica Booth online. Capture, edit, and share stunning photos with Picapica Booth anytime, anywhere.",
+      "applicationCategory": "Photography",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "isAccessibleForFree": true,
+      "screenshot": "https://picapicabooth.app/screenshot.jpg",
+      "featureList": "Photo Capture, Creative Filters, Photo Strip Generation, Easy Sharing",
+      "softwareVersion": "2.0",
+      "inLanguage": ["en", "zh"],
+      "potentialAction": {
+        "@type": "UseAction",
+        "target": "https://picapicabooth.app/photobooth"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "PicapicaBooth",
+      "alternateName": "Picapica Booth",
+      "url": "https://picapicabooth.app",
+      "logo": "https://picapicabooth.app/logo.svg",
+      "sameAs": [
+        "https://facebook.com/picapicabooth",
+        "https://twitter.com/picapicabooth",
+        "https://instagram.com/picapicabooth"
+      ]
+    }
+    </script>
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://picapicabooth.app/" />
+    <meta property="og:title" content="PicapicaBooth - Free Online Photo Booth | Create Beautiful Photo Strips" />
+    <meta property="og:description" content="Create beautiful photo strips for FREE with PicapicaBooth - Your professional Picapica Booth online. Capture, edit, and share stunning photos with Picapica Booth anytime, anywhere." />
+    <meta property="og:image" content="https://picapicabooth.app/og-image.jpg" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://picapicabooth.app/" />
+    <meta property="twitter:title" content="PicapicaBooth - Free Online Photo Booth" />
+    <meta property="twitter:description" content="Create beautiful photo strips for FREE with our online photo booth. No download required!" />
+    <meta property="twitter:image" content="https://picapicabooth.app/twitter-image.jpg" />
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="%PUBLIC_URL%/logo.svg" as="image" type="image/svg+xml" />
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin />
+    
+    <!-- Page Speed Optimizations -->
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
 </head>
 <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>You need to enable JavaScript to run this Picapica Booth app.</noscript>
     <div id="root"></div> <!-- React mounts here -->
 </body>
 </html>
