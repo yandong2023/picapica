@@ -68,7 +68,7 @@ function AppContent() {
                   <rect x="24" y="10" width="2" height="4" rx="1" fill="white"/>
                 </svg>
                 <h1>{t('appName')}</h1>
-                <span className="free-tag">{t('free')}</span>
+               
               </div>
             </Link>
           </div>

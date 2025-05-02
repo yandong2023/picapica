@@ -12,12 +12,18 @@ const PhotoBooth = ({ setCapturedImages }) => {
 	const [lightCondition, setLightCondition] = useState('normal'); // 'dark', 'normal', 'bright'
 	const [recommendedFilter, setRecommendedFilter] = useState(null);
 	const [showRecommendation, setShowRecommendation] = useState(false);
+	const [cameraReady, setCameraReady] = useState(false); // 添加摄像头状态变量
 	
 	// Custom options
 	const [countdownTime, setCountdownTime] = useState(3); // Default 3 seconds
 	const [photoCount, setPhotoCount] = useState(4); // Default 4 photos
 	const [showSettings, setShowSettings] = useState(false); // Control settings panel display
 	const [filterMode, setFilterMode] = useState('standard'); // 'standard', 'professional', 'artistic'
+	// 美颜功能相关状态 - 默认开启美颜功能，提供更好的用户体验
+	const [beautyEnabled, setBeautyEnabled] = useState(true);
+	const [smoothLevel, setSmoothLevel] = useState(10); // 皮肤平滑度 (0-100)
+	const [brightnessLevel, setBrightnessLevel] = useState(5); // 美白程度 (0-50)
+	const [enhanceLevel, setEnhanceLevel] = useState(10); // 面部增强 (0-100)
 
 	useEffect(() => {
 		startCamera();
@@ -85,38 +91,162 @@ const PhotoBooth = ({ setCapturedImages }) => {
 	// Start Camera
 	const startCamera = async () => {
 		try {
+			// 如果已经有视频流，先停止它
 			if (videoRef.current && videoRef.current.srcObject) {
-				return;
+				const tracks = videoRef.current.srcObject.getTracks();
+				tracks.forEach(track => track.stop());
+				videoRef.current.srcObject = null;
 			}
-			const constraints = {
-				video: {
-					facingMode: "user",
-					width: { ideal: 1920 },
-					height: { ideal: 1080 },
-					frameRate: { ideal: 30 },
-				},
+			
+			// 尝试使用更低的分辨率，提高兼容性
+			const tryGetUserMedia = async (constraints) => {
+				try {
+					console.log("尝试使用以下约束获取摄像头:", constraints);
+					return await navigator.mediaDevices.getUserMedia(constraints);
+				} catch (err) {
+					console.warn("获取摄像头失败:", err);
+					throw err;
+				}
 			};
+			
+			// 定义多个分辨率选项，从高到低尝试
+			const constraintsOptions = [
+				// 选项1: 高分辨率
+				{
+					video: {
+						facingMode: "user",
+						width: { ideal: 1280 },
+						height: { ideal: 720 },
+					},
+					audio: false,
+				},
+				// 选项2: 中等分辨率
+				{
+					video: {
+						facingMode: "user",
+						width: { ideal: 640 },
+						height: { ideal: 480 },
+					},
+					audio: false,
+				},
+				// 选项3: 低分辨率
+				{
+					video: {
+						facingMode: "user",
+					},
+					audio: false,
+				},
+				// 选项4: 最低要求，任何可用的视频
+				{
+					video: true,
+					audio: false,
+				}
+			];
+			
+			// 逐个尝试不同的约束条件
+			let stream = null;
+			let lastError = null;
+			
+			for (const constraints of constraintsOptions) {
+				try {
+					stream = await tryGetUserMedia(constraints);
+					console.log("成功获取摄像头流:", constraints);
+					break; // 成功获取流，跳出循环
+				} catch (error) {
+					lastError = error;
+					console.warn(`尝试约束 ${JSON.stringify(constraints)} 失败，尝试下一个选项`);
+				}
+			}
+			
+			if (!stream) {
+				throw lastError || new Error("无法获取摄像头流，所有尝试均失败");
+			}
 
-			const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
+			// 确保组件仍然挂载
 			if (videoRef.current) {
+				// 设置视频源
 				videoRef.current.srcObject = stream;
-				videoRef.current
-					.play()
-					.catch((err) => console.error("Error playing video:", err));
-
-				// mirror video stream
+				
+				// 设置视频样式
 				videoRef.current.style.transform = "scaleX(-1)";
 				videoRef.current.style.objectFit = "cover";
 				
+				// 使用事件监听器确保视频加载完成后再播放
+				const playVideo = () => {
+					if (!videoRef.current) return;
+					
+					console.log("尝试播放视频...");
+					videoRef.current.play()
+						.then(() => {
+							console.log("视频播放成功!");
+							// 显示摄像头状态
+							setCameraReady(true);
+						})
+						.catch(err => {
+							// 如果播放失败，等待一段时间后重试
+							console.warn("视频播放失败，正在重试...", err);
+							setTimeout(() => {
+								if (videoRef.current) {
+									console.log("重试播放视频...");
+									videoRef.current.play()
+										.then(() => {
+											console.log("重试播放成功!");
+											setCameraReady(true);
+										})
+										.catch(e => {
+											console.error("重试播放视频后仍然失败:", e);
+											alert("无法播放摄像头视频。请刷新页面重试，或检查浏览器设置。");
+										});
+								}
+							}, 1500);
+						});
+				};
+				
+				// 如果视频已经有足够的数据可以播放
+				if (videoRef.current.readyState >= 2) {
+					playVideo();
+				} else {
+					// 否则等待加载
+					videoRef.current.addEventListener('loadeddata', playVideo, { once: true });
+					
+					// 添加超时处理，防止视频加载过久
+					const timeoutId = setTimeout(() => {
+						if (videoRef.current && !cameraReady) {
+							console.warn("视频加载超时，尝试强制播放");
+							playVideo();
+						}
+					}, 5000);
+					
+					// 清理超时
+					return () => clearTimeout(timeoutId);
+				}
+				
 				// Start light analysis after camera is ready
 				const analysisInterval = setInterval(analyzeLightConditions, 3000);
-				return () => clearInterval(analysisInterval);
+				return () => {
+					clearInterval(analysisInterval);
+					// 清理视频事件监听器
+					if (videoRef.current) {
+						videoRef.current.removeEventListener('loadeddata', playVideo);
+					}
+				};
 			}
 		} catch (error) {
-			if (error.name == "NotAllowedError") {
-				console.error("User denied camera permissions.");
-			} else console.error("Error accessing camera:", error);
+			if (error.name === "NotAllowedError") {
+				console.error("用户拒绝了相机权限。");
+				alert("需要相机权限才能使用照相亭功能。请允许访问相机。");
+			} else if (error.name === "NotFoundError" || error.name === "DevicesNotFoundError") {
+				console.error("找不到摄像头设备。");
+				alert("未检测到摄像头设备。请确保您的设备有摄像头并且已连接。");
+			} else if (error.name === "NotReadableError" || error.name === "TrackStartError") {
+				console.error("摄像头被占用或无法访问。");
+				alert("摄像头可能被其他应用程序占用。请关闭可能使用摄像头的其他应用，然后刷新页面。");
+			} else {
+				console.error("访问相机时出错:", error);
+				alert("无法访问相机: " + (error.message || "未知错误") + "\n请刷新页面重试。");
+			}
+			// 设置摄像头状态为未就绪
+			setCameraReady(false);
 		}
 	};
 
@@ -186,6 +316,102 @@ const PhotoBooth = ({ setCapturedImages }) => {
 		captureSequence();
 	};
 
+	// 美颜处理函数 - 简化版，避免过度处理导致图像变黑
+	const applyBeautyEffect = (context, width, height) => {
+		if (!beautyEnabled) return; // 如果美颜未启用，直接返回
+		
+		// 获取图像数据
+		const imageData = context.getImageData(0, 0, width, height);
+		const data = imageData.data;
+		
+		// 创建临时数组存储处理后的数据
+		const tempData = new Uint8ClampedArray(data.length);
+		for (let i = 0; i < data.length; i++) {
+			tempData[i] = data[i];
+		}
+		
+		// 简单的柔化和美白处理（不进行肤色检测，避免错误识别）
+		const pixelWidth = width * 4;
+		
+		// 只对中心区域应用美颜，避免处理背景
+		const centerStartX = Math.floor(width * 0.2);
+		const centerEndX = Math.floor(width * 0.8);
+		const centerStartY = Math.floor(height * 0.1);
+		const centerEndY = Math.floor(height * 0.9);
+		
+		// 轻度模糊处理（只应用于非边缘区域）
+		if (smoothLevel > 0) {
+			const blurRadius = Math.max(1, Math.floor(smoothLevel / 20)); // 根据平滑度计算模糊半径
+			
+			for (let y = centerStartY + blurRadius; y < centerEndY - blurRadius; y++) {
+				for (let x = centerStartX + blurRadius; x < centerEndX - blurRadius; x++) {
+					const idx = (y * width + x) * 4;
+					
+					// 简单的3x3均值模糊
+					for (let c = 0; c < 3; c++) { // 只处理RGB通道
+						let sum = 0;
+						let count = 0;
+						
+						// 收集周围像素
+						for (let dy = -1; dy <= 1; dy++) {
+							for (let dx = -1; dx <= 1; dx++) {
+								const offset = ((y + dy) * width + (x + dx)) * 4 + c;
+								sum += data[offset];
+								count++;
+							}
+						}
+						
+						// 计算平均值，并与原始值混合
+						const blurFactor = smoothLevel / 200; // 0-0.5范围
+						const avgValue = sum / count;
+						tempData[idx + c] = data[idx + c] * (1 - blurFactor) + avgValue * blurFactor;
+					}
+				}
+			}
+		}
+		
+		// 应用美白效果（全局处理）
+		if (brightnessLevel > 0) {
+			const brightnessFactor = brightnessLevel / 2; // 降低美白强度，避免过曝
+			
+			for (let i = 0; i < data.length; i += 4) {
+				// 提高亮度，但保持自然
+				for (let j = 0; j < 3; j++) {
+					tempData[i + j] = Math.min(255, tempData[i + j] + brightnessFactor);
+				}
+			}
+		}
+		
+		// 应用轻微的对比度增强（全局处理）
+		if (enhanceLevel > 0) {
+			const enhanceFactor = enhanceLevel / 400; // 降低增强强度，避免过度处理
+			
+			for (let i = 0; i < data.length; i += 4) {
+				for (let j = 0; j < 3; j++) {
+					const value = tempData[i + j];
+					const normalized = value / 255; // 归一化到0-1
+					
+					// 轻微的S曲线对比度增强
+					let enhanced;
+					if (normalized < 0.5) {
+						enhanced = normalized - enhanceFactor * (0.5 - normalized) * normalized;
+					} else {
+						enhanced = normalized + enhanceFactor * (normalized - 0.5) * (1 - normalized);
+					}
+					
+					tempData[i + j] = Math.max(0, Math.min(255, enhanced * 255));
+				}
+			}
+		}
+		
+		// 将处理后的数据写回
+		for (let i = 0; i < data.length; i++) {
+			data[i] = tempData[i];
+		}
+		
+		context.putImageData(imageData, 0, 0);
+	};
+
 	// Capture Photo
 	const capturePhoto = () => {
 		const video = videoRef.current;
@@ -194,8 +420,9 @@ const PhotoBooth = ({ setCapturedImages }) => {
 		if (video && canvas) {
 			const context = canvas.getContext("2d");
 
-			const targetWidth = 1280;
-			const targetHeight = 720;
+			// 恢复高分辨率，2560x1440
+			const targetWidth = 2560;
+			const targetHeight = 1440;
 
 			canvas.width = targetWidth;
 			canvas.height = targetHeight;
@@ -217,27 +444,34 @@ const PhotoBooth = ({ setCapturedImages }) => {
 				startY = (video.videoHeight - drawHeight) / 2;
 			}
 
-        // Flip canvas for mirroring
-        context.save();
-        context.translate(canvas.width, 0);
-        context.scale(-1, 1);
+			// Flip canvas for mirroring
+			context.save();
+			context.translate(canvas.width, 0);
+			context.scale(-1, 1);
 
-        context.drawImage(
-            video,
-            startX, startY, drawWidth, drawHeight,  
-            0, 0, targetWidth, targetHeight        
-        );
-        context.restore();
+			context.drawImage(
+				video,
+				startX, startY, drawWidth, drawHeight,  
+				0, 0, targetWidth, targetHeight        
+			);
+			context.restore();
+			
+			// 应用美颜效果
+			if (beautyEnabled) {
+				applyBeautyEffect(context, targetWidth, targetHeight);
+			}
 
-        if (filter !== 'none') {
-            context.filter = filter;
-            context.drawImage(canvas, 0, 0);
-            context.filter = 'none';
-        }
+			// 应用滤镜效果
+			if (filter !== 'none') {
+				context.filter = filter;
+				context.drawImage(canvas, 0, 0);
+				context.filter = 'none';
+			}
 
-        return canvas.toDataURL("image/png");
-    }
-};
+			// 使用最高质量输出图像
+			return canvas.toDataURL("image/png", 1.0);
+		}
+	};
 
 	return (
 		<div className="photo-booth">
@@ -286,32 +520,94 @@ const PhotoBooth = ({ setCapturedImages }) => {
 
 			{showSettings && !capturing && (
 				<div className="settings-panel">
-					<h3><i className="fas fa-sliders-h"></i> PicapicaBooth Settings</h3>
+					<h3><i className="fas fa-cog"></i> 照相设置</h3>
+					
+					<div className="beauty-settings">
+						<h3><i className="fas fa-magic"></i> 美颜功能</h3>
+						<div className="setting-item beauty-toggle">
+							<label>启用美颜</label>
+							<div className="toggle-switch">
+								<input 
+									type="checkbox" 
+									id="beauty-toggle" 
+									checked={beautyEnabled} 
+									onChange={() => setBeautyEnabled(!beautyEnabled)} 
+								/>
+								<label htmlFor="beauty-toggle"></label>
+							</div>
+						</div>
+						
+						{beautyEnabled && (
+							<div className="beauty-controls">
+								<div className="setting-item slider">
+									<label>皮肤平滑度: {smoothLevel}</label>
+									<input 
+										type="range" 
+										min="0" 
+										max="100" 
+										value={smoothLevel} 
+										onChange={(e) => setSmoothLevel(parseInt(e.target.value))} 
+									/>
+								</div>
+								<div className="setting-item slider">
+									<label>美白程度: {brightnessLevel}</label>
+									<input 
+										type="range" 
+										min="0" 
+										max="50" 
+										value={brightnessLevel} 
+										onChange={(e) => setBrightnessLevel(parseInt(e.target.value))} 
+									/>
+								</div>
+								<div className="setting-item slider">
+									<label>面部增强: {enhanceLevel}</label>
+									<input 
+										type="range" 
+										min="0" 
+										max="100" 
+										value={enhanceLevel} 
+										onChange={(e) => setEnhanceLevel(parseInt(e.target.value))} 
+									/>
+								</div>
+								<button 
+									className="reset-beauty" 
+									onClick={() => {
+										setSmoothLevel(30);
+										setBrightnessLevel(10);
+										setEnhanceLevel(20);
+									}}
+								>
+									重置为默认值
+								</button>
+							</div>
+						)}
+					</div>
+					
 					<div className="setting-item">
-						<label htmlFor="countdown-time"><i className="fas fa-clock"></i> Countdown Time:</label>
+						<label htmlFor="countdown-time"><i className="fas fa-clock"></i> 倒计时时间:</label>
 						<select 
 							id="countdown-time" 
 							value={countdownTime} 
 							onChange={handleCountdownChange}
 							className="setting-select"
 						>
-							<option value="3">3 seconds</option>
-							<option value="5">5 seconds</option>
-							<option value="10">10 seconds</option>
+							<option value="3">3秒</option>
+							<option value="5">5秒</option>
+							<option value="10">10秒</option>
 						</select>
 					</div>
 					
 					<div className="setting-item">
-						<label htmlFor="photo-count"><i className="fas fa-images"></i> Number of Photos:</label>
+						<label htmlFor="photo-count"><i className="fas fa-images"></i> 照片数量:</label>
 						<select 
 							id="photo-count" 
 							value={photoCount} 
 							onChange={handlePhotoCountChange}
 							className="setting-select"
 						>
-							<option value="2">2 photos</option>
-							<option value="4">4 photos</option>
-							<option value="6">6 photos</option>
+							<option value="2">2张</option>
+							<option value="4">4张</option>
+							<option value="6">6张</option>
 						</select>
 					</div>
 					<p className="settings-tip">Tip: Selecting more photos creates a richer PicapicaBooth photo strip!</p>

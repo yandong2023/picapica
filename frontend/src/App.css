@@ -791,6 +791,51 @@ button:active {
   margin-top: 15px;
 }
 
+.preview-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.share-button {
+  background-color: #ff6b9d !important;
+  color: white !important;
+  font-weight: bold !important;
+  padding: 12px 24px !important;
+  font-size: 1.1rem !important;
+  box-shadow: 0 4px 8px rgba(255, 107, 157, 0.3) !important;
+  transform: scale(1.1) !important;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease !important;
+}
+
+.share-button:hover {
+  background-color: #ff4785 !important;
+  transform: scale(1.15) !important;
+  box-shadow: 0 6px 12px rgba(255, 107, 157, 0.4) !important;
+}
+
+.share-button:before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.5), rgba(255,255,255,0.1));
+  transform: rotate(45deg) translate(-100%, -100%);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% { transform: rotate(45deg) translate(-100%, -100%); }
+  20% { transform: rotate(45deg) translate(100%, 100%); }
+  100% { transform: rotate(45deg) translate(100%, 100%); }
+}
+
 /* Fix Layout Between Camera and Photo Strip */
 .photo-container {
   display: flex;
@@ -2109,4 +2154,139 @@ body {
   .stats-container {
     flex-direction: column;
   }
+}
+
+/* 美颜功能样式 */
+.beauty-settings {
+  background-color: #fff8fa;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 15px 0;
+  border: 1px solid #ffccd9;
+  box-shadow: 0 2px 8px rgba(255, 107, 157, 0.1);
+}
+
+.beauty-settings h3 {
+  color: #ff6b9d;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.beauty-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px dashed #ffccd9;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch label {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.toggle-switch label:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.toggle-switch input:checked + label {
+  background-color: #ff6b9d;
+}
+
+.toggle-switch input:checked + label:before {
+  transform: translateX(26px);
+}
+
+.beauty-controls {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.setting-item.slider {
+  margin-bottom: 15px;
+}
+
+.setting-item.slider label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.setting-item.slider input[type="range"] {
+  width: 100%;
+  height: 6px;
+  border-radius: 5px;
+  background: #f0f0f0;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.setting-item.slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ff6b9d;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.setting-item.slider input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 5px rgba(255, 107, 157, 0.5);
+}
+
+.reset-beauty {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  color: #666;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 5px;
+  width: 100%;
+}
+
+.reset-beauty:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
