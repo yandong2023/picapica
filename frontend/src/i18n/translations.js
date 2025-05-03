@@ -110,6 +110,75 @@ const translations = {
     // 语言切换
     switchToChinese: "Switch to Chinese",
     switchToEnglish: "Switch to English",
+    
+    // Showcase
+    showcaseTitle: "Unlimited Creativity, Stunning Results",
+    showcaseIntro: "Check out beautiful photo strips created by users with PicapicaBooth",
+    showcaseAlt1: "Photo strip example 1",
+    showcaseAlt2: "Photo strip example 2",
+    showcaseAlt3: "Photo strip example 3",
+    showcaseAlt4: "Photo strip example 4",
+
+    // CTA
+    ctaTitle: "Ready to Create Your Photo Strip with PicapicaBooth?",
+    ctaDesc: "Start using PicapicaBooth now to capture and share your amazing moments!",
+
+    // Footer
+    footerSlogan: "Create beautiful photo strips with our online photo booth",
+    footerProduct: "Product",
+    footerSupport: "Support",
+    footerCompany: "Company",
+    contactUs: "Contact Us",
+    privacyPolicy: "Privacy Policy",
+    aboutUs: "About Us",
+    blog: "Blog",
+    careers: "Careers",
+    footerCopyright: "All Rights Reserved.",
+
+    // Features
+    photoCapture: "Photo Capture",
+    photoCaptureDesc: "Easily take high-quality photos with your device.",
+    creativeFilters: "Creative Filters",
+    creativeFiltersDesc: "Apply a variety of fun and artistic filters to your photos.",
+    photoStripGeneration: "Photo Strip Generation",
+    photoStripGenerationDesc: "Automatically generate classic photo strips.",
+    easySharing: "Easy Sharing",
+    easySharingDesc: "Share your creations instantly with friends and social media.",
+
+    // Workflow
+    workflowTitle: "How It Works",
+    workflowIntro: "Just three simple steps to create your perfect photo strip.",
+    workflowStep1: "Take Photos",
+    workflowStep1Desc: "Capture your best moments using your camera.",
+    workflowStep2: "Edit & Decorate",
+    workflowStep2Desc: "Apply filters and add decorations to personalize your photos.",
+    workflowStep3: "Download & Share",
+    workflowStep3Desc: "Save your photo strip or share it with friends.",
+
+    // Testimonials
+    testimonialsTitle: "What Our Users Say",
+    testimonialsIntro: "Real feedback from PicapicaBooth users.",
+    testimonial1Name: "Emily Johnson",
+    testimonial1Role: "Photographer",
+    testimonial1Comment: "PicapicaBooth is so easy to use and the results are amazing!",
+    testimonial2Name: "Michael Lee",
+    testimonial2Role: "Event Organizer",
+    testimonial2Comment: "Our guests loved the instant photo strips. Highly recommended!",
+    testimonial3Name: "Sophia Chen",
+    testimonial3Role: "Student",
+    testimonial3Comment: "A fun way to capture memories with friends online.",
+
+    // FAQ
+    faqTitle: "Frequently Asked Questions",
+    faqIntro: "Here are the answers to common questions about PicapicaBooth.",
+    faq1Q: "Is PicapicaBooth free to use?",
+    faq1A: "Yes, PicapicaBooth is completely free for everyone.",
+    faq2Q: "Do I need to install any software?",
+    faq2A: "No installation required. You can use PicapicaBooth directly in your browser.",
+    faq3Q: "Can I use PicapicaBooth on my phone?",
+    faq3A: "Yes, PicapicaBooth works on both desktop and mobile devices.",
+    faq4Q: "How can I share my photo strips?",
+    faq4A: "You can download your photo strips or share them directly to social media.",
   },
   
   zh: {
@@ -173,15 +242,17 @@ const translations = {
     applyRecommended: "应用推荐",
     
     // 照片预览
-    previewTitle: "Picapica Booth 照片预览",
-    layoutStyles: "选择照片布局风格",
-    classicStrip: "经典条状",
+    previewTitle: "照片预览",
+    layoutStyles: "选择排版样式",
+    classicStrip: "经典条幅",
     gridLayout: "网格布局",
     polaroidStyle: "宝丽来风格",
     magazineCover: "杂志封面",
-    
-    // 背景颜色
-    backgroundColor: "选择背景颜色",
+    vintageFilm: "复古胶片",
+    comicStyle: "漫画风格",
+    photoCollage: "照片拼贴",
+    socialMedia: "社交媒体",
+    chooseBackgroundColor: "选择背景颜色",
     white: "白色",
     black: "黑色",
     pink: "粉色",
@@ -189,6 +260,16 @@ const translations = {
     blue: "蓝色",
     yellow: "黄色",
     purple: "紫色",
+    chooseFrameStyle: "选择边框样式",
+    noFrame: "无边框",
+    pastelHearts: "马卡龙爱心",
+    cuteClouds: "可爱云朵",
+    partyTime: "派对时刻",
+    royalStyle: "皇家风格",
+    emojiFun: "表情趣味",
+    downloadPhotoStrip: "下载照片条",
+    takeNewPhotos: "重新拍照",
+    shareOnSocialMedia: "分享到社交媒体",
     
     // 装饰选项
     decorations: "选择装饰贴纸",
@@ -203,7 +284,6 @@ const translations = {
     
     // 分享
     shareTitle: "分享您的Picapica Booth作品",
-    socialMedia: "社交媒体",
     emailInvite: "邮件邀请",
     copyLink: "复制链接",
     linkCopied: "链接已复制！",
@@ -222,6 +302,75 @@ const translations = {
     // 语言切换
     switchToChinese: "切换到中文",
     switchToEnglish: "切换到英文",
+    
+    // Showcase
+    showcaseTitle: "无限创意，惊艳效果",
+    showcaseIntro: "看看用户用PicapicaBooth创作的精美照片条",
+    showcaseAlt1: "照片条示例1",
+    showcaseAlt2: "照片条示例2",
+    showcaseAlt3: "照片条示例3",
+    showcaseAlt4: "照片条示例4",
+
+    // CTA
+    ctaTitle: "准备好用PicapicaBooth制作你的照片条了吗？",
+    ctaDesc: "立即使用PicapicaBooth，捕捉并分享你的精彩瞬间！",
+
+    // Footer
+    footerSlogan: "用我们的在线照相亭创作精美照片条",
+    footerProduct: "产品",
+    footerSupport: "支持",
+    footerCompany: "公司",
+    contactUs: "联系我们",
+    privacyPolicy: "隐私政策",
+    aboutUs: "关于我们",
+    blog: "博客",
+    careers: "招聘",
+    footerCopyright: "保留所有权利。",
+
+    // Features
+    photoCapture: "拍照",
+    photoCaptureDesc: "使用您的设备轻松拍摄高质量照片。",
+    creativeFilters: "创意滤镜",
+    creativeFiltersDesc: "为照片添加多种有趣和艺术滤镜。",
+    photoStripGeneration: "照片条生成",
+    photoStripGenerationDesc: "自动生成经典照片条。",
+    easySharing: "便捷分享",
+    easySharingDesc: "一键分享您的作品到好友和社交平台。",
+
+    // Workflow
+    workflowTitle: "使用流程",
+    workflowIntro: "只需三步，轻松制作完美照片条。",
+    workflowStep1: "拍摄照片",
+    workflowStep1Desc: "用相机捕捉精彩瞬间。",
+    workflowStep2: "编辑装饰",
+    workflowStep2Desc: "添加滤镜和装饰，个性化您的照片。",
+    workflowStep3: "下载分享",
+    workflowStep3Desc: "保存照片条或分享给好友。",
+
+    // Testimonials
+    testimonialsTitle: "用户评价",
+    testimonialsIntro: "来自 PicapicaBooth 用户的真实反馈。",
+    testimonial1Name: "艾米丽·约翰逊",
+    testimonial1Role: "摄影师",
+    testimonial1Comment: "PicapicaBooth 非常易用，效果令人惊艳！",
+    testimonial2Name: "李明",
+    testimonial2Role: "活动策划",
+    testimonial2Comment: "我们的嘉宾都很喜欢即时照片条，强烈推荐！",
+    testimonial3Name: "陈思佳",
+    testimonial3Role: "学生",
+    testimonial3Comment: "和朋友们一起在线留住美好回忆，真的很有趣。",
+
+    // FAQ
+    faqTitle: "常见问题",
+    faqIntro: "这里有关于 PicapicaBooth 的常见问题解答。",
+    faq1Q: "PicapicaBooth 是免费的吗？",
+    faq1A: "是的，PicapicaBooth 对所有用户完全免费。",
+    faq2Q: "需要安装软件吗？",
+    faq2A: "无需安装，您可以直接在浏览器中使用 PicapicaBooth。",
+    faq3Q: "可以在手机上使用吗？",
+    faq3A: "可以，PicapicaBooth 支持桌面和移动设备。",
+    faq4Q: "如何分享我的照片条？",
+    faq4A: "您可以下载照片条或直接分享到社交平台。",
   }
 };
 

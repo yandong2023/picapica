@@ -1,8 +1,13 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import SocialShare from "./SocialShare";
+import { useLanguage } from '../i18n/i18n';
 
 const PhotoPreview = ({ capturedImages }) => {
+	const { t, language } = useLanguage();
+	const location = useLocation();
+	const isZhRoute = location.pathname.startsWith('/zh');
+	const shouldWaitLanguage = (isZhRoute && language !== 'zh') || (!isZhRoute && language !== 'en');
 	const stripCanvasRef = useRef(null);
 	const navigate = useNavigate();
 	const [stripColor, setStripColor] = useState("white");
@@ -693,11 +698,12 @@ const PhotoPreview = ({ capturedImages }) => {
 
 	useEffect(() => {
 		if (!capturedImages || capturedImages.length === 0) {
-			navigate("/photobooth");
+			const isZhRoute = location.pathname.startsWith('/zh');
+			navigate(isZhRoute ? '/zh/photobooth' : '/photobooth');
 		} else {
 			generatePhotoStrip();
 		}
-	}, [capturedImages, generatePhotoStrip, navigate]);
+	}, [capturedImages, generatePhotoStrip, navigate, location.pathname]);
 
 	useEffect(() => {
 		generatePhotoStrip();
@@ -729,36 +735,38 @@ const PhotoPreview = ({ capturedImages }) => {
 		setShowShare(false);
 	};
 
-	return (
+	return shouldWaitLanguage ? (
+		<div />
+	) : (
 		<div className="photo-preview">
-			<h2>PicapicaBooth Photo Preview</h2>
+			<h2>{t('previewTitle')}</h2>
 
 			<div className="layout-options">
-			<h3><i className="fas fa-th-large"></i> Choose Layout Style</h3>
+			<h3><i className="fas fa-th-large"></i> {t('chooseLayoutStyle')}</h3>
 			<div className="layout-buttons">
 				<button 
 					className={layoutStyle === "classic" ? "active" : ""}
 					onClick={() => setLayoutStyle("classic")}
 				>
-					<i className="fas fa-grip-lines"></i> Classic Strip
+					<i className="fas fa-grip-lines"></i> {t('classicStrip')}
 				</button>
 				<button 
 					className={layoutStyle === "grid" ? "active" : ""}
 					onClick={() => setLayoutStyle("grid")}
 				>
-					<i className="fas fa-th"></i> Grid Layout
+					<i className="fas fa-th"></i> {t('gridLayout')}
 				</button>
 				<button 
 					className={layoutStyle === "polaroid" ? "active" : ""}
 					onClick={() => setLayoutStyle("polaroid")}
 				>
-					<i className="fas fa-images"></i> Polaroid Style
+					<i className="fas fa-images"></i> {t('polaroidStyle')}
 				</button>
 				<button 
 					className={layoutStyle === "magazine" ? "active" : ""}
 					onClick={() => setLayoutStyle("magazine")}
 				>
-					<i className="fas fa-book-open"></i> Magazine Cover
+					<i className="fas fa-book-open"></i> {t('magazineCover')}
 				</button>
 			</div>
 			
@@ -767,76 +775,76 @@ const PhotoPreview = ({ capturedImages }) => {
 					className={layoutStyle === "vintage" ? "active" : ""}
 					onClick={() => setLayoutStyle("vintage")}
 				>
-					<i className="fas fa-film"></i> Vintage Film
+					<i className="fas fa-film"></i> {t('vintageFilm')}
 				</button>
 				<button 
 					className={layoutStyle === "comic" ? "active" : ""}
 					onClick={() => setLayoutStyle("comic")}
 				>
-					<i className="fas fa-comment-dots"></i> Comic Style
+					<i className="fas fa-comment-dots"></i> {t('comicStyle')}
 				</button>
 				<button 
 					className={layoutStyle === "collage" ? "active" : ""}
 					onClick={() => setLayoutStyle("collage")}
 				>
-					<i className="fas fa-object-group"></i> Photo Collage
+					<i className="fas fa-object-group"></i> {t('photoCollage')}
 				</button>
 				<button 
 					className={layoutStyle === "social" ? "active" : ""}
 					onClick={() => setLayoutStyle("social")}
 				>
-					<i className="fas fa-mobile-alt"></i> Social Media
+					<i className="fas fa-mobile-alt"></i> {t('socialMedia')}
 				</button>
 			</div>
 		</div>
 			
 			<div className="color-options">
-				<h3><i className="fas fa-palette"></i> Choose Background Color</h3>
+				<h3><i className="fas fa-palette"></i> {t('chooseBackgroundColor')}</h3>
 				<div className="color-buttons">
 					<button className={stripColor === "white" ? "active" : ""} onClick={() => setStripColor("white")}>
-						<span className="color-preview white"></span> White
+						<span className="color-preview white"></span> {t('white')}
 					</button>
 					<button className={stripColor === "black" ? "active" : ""} onClick={() => setStripColor("black")}>
-						<span className="color-preview black"></span> Black
+						<span className="color-preview black"></span> {t('black')}
 					</button>
 					<button className={stripColor === "#f6d5da" ? "active" : ""} onClick={() => setStripColor("#f6d5da")}>
-						<span className="color-preview pink"></span> Pink
+						<span className="color-preview pink"></span> {t('pink')}
 					</button>
 					<button className={stripColor === "#dde6d5" ? "active" : ""} onClick={() => setStripColor("#dde6d5")}>
-						<span className="color-preview green"></span> Green
+						<span className="color-preview green"></span> {t('green')}
 					</button>
 					<button className={stripColor === "#adc3e5" ? "active" : ""} onClick={() => setStripColor("#adc3e5")}>
-						<span className="color-preview blue"></span> Blue
+						<span className="color-preview blue"></span> {t('blue')}
 					</button>
 					<button className={stripColor === "#FFF2CC" ? "active" : ""} onClick={() => setStripColor("#FFF2CC")}>
-						<span className="color-preview yellow"></span> Yellow
+						<span className="color-preview yellow"></span> {t('yellow')}
 					</button>
 					<button className={stripColor === "#dbcfff" ? "active" : ""} onClick={() => setStripColor("#dbcfff")}>
-						<span className="color-preview purple"></span> Purple
+						<span className="color-preview purple"></span> {t('purple')}
 					</button>
 				</div>
 			</div>
 
 			<div className="frame-options">
-				<h3><i className="fas fa-border-style"></i> Choose Frame Style</h3>
+				<h3><i className="fas fa-border-style"></i> {t('chooseFrameStyle')}</h3>
 				<div className="frame-buttons">
 					<button 
 						className={selectedFrame === "none" ? "active" : ""}
 						onClick={() => setSelectedFrame("none")}
 					>
-						<i className="fas fa-square"></i> No Frame
+						<i className="fas fa-square"></i> {t('noFrame')}
 					</button>
 					<button 
 						className={selectedFrame === "pastel" ? "active" : ""}
 						onClick={() => setSelectedFrame("pastel")}
 					>
-						<i className="fas fa-heart"></i> Pastel Hearts
+						<i className="fas fa-heart"></i> {t('pastelHearts')}
 					</button>
 					<button 
 						className={selectedFrame === "cute" ? "active" : ""}
 						onClick={() => setSelectedFrame("cute")}
 					>
-						<i className="fas fa-cloud"></i> Cute Clouds
+						<i className="fas fa-cloud"></i> {t('cuteClouds')}
 					</button>
 				</div>
 				<div className="frame-buttons frame-buttons-row2">
@@ -844,19 +852,19 @@ const PhotoPreview = ({ capturedImages }) => {
 						className={selectedFrame === "party" ? "active" : ""}
 						onClick={() => setSelectedFrame("party")}
 					>
-						<i className="fas fa-birthday-cake"></i> Party Time
+						<i className="fas fa-birthday-cake"></i> {t('partyTime')}
 					</button>
 					<button 
 						className={selectedFrame === "royal" ? "active" : ""}
 						onClick={() => setSelectedFrame("royal")}
 					>
-						<i className="fas fa-crown"></i> Royal Style
+						<i className="fas fa-crown"></i> {t('royalStyle')}
 					</button>
 					<button 
 						className={selectedFrame === "emoji" ? "active" : ""}
 						onClick={() => setSelectedFrame("emoji")}
 					>
-						<i className="far fa-grin-stars"></i> Emoji Fun
+						<i className="far fa-grin-stars"></i> {t('emojiFun')}
 					</button>
 				</div>
 			</div>
@@ -865,13 +873,13 @@ const PhotoPreview = ({ capturedImages }) => {
 
 			<div className="preview-actions">
 				<button onClick={downloadPhotoStrip} className="download-button">
-					<i className="fas fa-download"></i> Download Photo Strip
+					<i className="fas fa-download"></i> {t('downloadPhotoStrip')}
 				</button>
-				<button onClick={() => navigate("/photobooth")} className="back-button">
-					<i className="fas fa-camera"></i> Take New Photos
+				<button onClick={() => navigate(language === 'zh' ? '/zh/photobooth' : '/photobooth')} className="back-button">
+					<i className="fas fa-camera"></i> {t('takeNewPhotos')}
 				</button>
 				<button onClick={handleShare} className="share-button">
-					<i className="fas fa-share-alt"></i> Share on Social Media
+					<i className="fas fa-share-alt"></i> {t('shareOnSocialMedia')}
 				</button>
 			</div>
 

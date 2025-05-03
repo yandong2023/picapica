@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link, useLocation } from "react-router-dom";  
+import { Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";  
 import Home from "./components/Home";
 import Welcome from "./components/Welcome";
 import PhotoBooth from "./components/PhotoBooth";
@@ -25,8 +25,9 @@ function AppWrapper() {
 function AppContent() {
   const [capturedImages, setCapturedImages] = useState([]);
   const [showTutorial, setShowTutorial] = useState(false);
-  const { t } = useLanguage();
+  const { t, changeLanguage, language } = useLanguage();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Show tutorial
   const handleShowTutorial = () => {
@@ -51,6 +52,15 @@ function AppContent() {
     
     document.title = pathTitles[location.pathname] || `${t('appName')} - ${t('tagline')}`;
   }, [location.pathname, t]);
+
+  // 路由变化时自动切换语言
+  useEffect(() => {
+    if (location.pathname.startsWith("/zh")) {
+      if (language !== "zh") changeLanguage("zh");
+    } else {
+      if (language !== "en") changeLanguage("en");
+    }
+  }, [location.pathname, changeLanguage, language]);
 
   return (
     <div className="App">
@@ -84,16 +94,25 @@ function AppContent() {
           </div>
           
           <div className="nav-right">
-            <LanguageSwitcher />
+            <LanguageSwitcher onSwitchLanguage={(lang) => {
+              if (lang === 'zh') {
+                navigate('/zh');
+              } else {
+                navigate('/');
+              }
+            }} />
           </div>
         </nav>
       </header>
   
       <Routes>
         <Route path="/" element={<Home onShowTutorial={handleShowTutorial} />} />
+        <Route path="/zh" element={<Home onShowTutorial={handleShowTutorial} />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/photobooth" element={<PhotoBooth setCapturedImages={setCapturedImages} />} />
+        <Route path="/zh/photobooth" element={<PhotoBooth setCapturedImages={setCapturedImages} />} />
         <Route path="/preview" element={<PhotoPreview capturedImages={capturedImages} />} />
+        <Route path="/zh/preview" element={<PhotoPreview capturedImages={capturedImages} />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>

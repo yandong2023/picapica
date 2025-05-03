@@ -7,11 +7,14 @@ export const LanguageContext = createContext();
 
 // 语言提供者组件
 export const LanguageProvider = ({ children }) => {
-  // Get saved language setting from localStorage, default to English
-  const [language, setLanguage] = useState(() => {
+  // 优先根据URL判断语言
+  const getInitialLanguage = () => {
+    if (window.location.pathname.startsWith('/zh')) return 'zh';
     const savedLanguage = localStorage.getItem('picapica_language');
-    return savedLanguage || 'en'; // Default to English
-  });
+    return savedLanguage || 'en';
+  };
+
+  const [language, setLanguage] = useState(getInitialLanguage);
 
   // 切换语言函数
   const changeLanguage = (lang) => {

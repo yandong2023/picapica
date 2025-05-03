@@ -144,7 +144,7 @@ const SocialShare = ({ imageUrl, onClose }) => {
       <div className="social-share-container">
         <div className="social-share-header">
           <h2><i className="fas fa-share-alt"></i> Share Your Picapica Booth Creation</h2>
-          <button className="close-button" onClick={onClose}><i className="fas fa-times"></i></button>
+          <button className="close-button" onClick={onClose} aria-label="Close share dialog"><i className="fas fa-times"></i></button>
         </div>
         
         <div className="social-share-content">

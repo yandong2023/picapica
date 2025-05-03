@@ -2,6 +2,8 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 import photoboothStripImage from "../assets/photobooth-strip.png";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useLanguage } from '../i18n/i18n';
 
 const Logo = () => (
   <div className="logo">
@@ -17,34 +19,39 @@ const Logo = () => (
 
 const Home = ({ onShowTutorial }) => {
   const navigate = useNavigate();
+  const { t, language } = useLanguage();
 
   const handleGetStarted = () => {
-    navigate('/photobooth');
+    if (language === 'zh') {
+      navigate('/zh/photobooth');
+    } else {
+      navigate('/photobooth');
+    }
   };
 
   // Sample user testimonials data
   const testimonials = [
     {
       id: 1,
-      name: "Sarah Johnson",
-      role: "Photography Enthusiast",
-      comment: "PicapicaBooth allows me to easily create professional-grade photo strips. The interface is clean and intuitive, and the results are fantastic!",
+      name: t('testimonial1Name'),
+      role: t('testimonial1Role'),
+      comment: t('testimonial1Comment'),
       avatar: "https://randomuser.me/api/portraits/women/32.jpg",
       rating: 5
     },
     {
       id: 2,
-      name: "Michael Chen",
-      role: "Event Planner",
-      comment: "I use PicapicaBooth for all my events, and clients absolutely love the fun photo booth feature.",
+      name: t('testimonial2Name'),
+      role: t('testimonial2Role'),
+      comment: t('testimonial2Comment'),
       avatar: "https://randomuser.me/api/portraits/men/46.jpg",
       rating: 5
     },
     {
       id: 3,
-      name: "Emily Wang",
-      role: "Social Media Manager",
-      comment: "The sharing feature is amazing! Our company's social media engagement increased by 30% thanks to this tool.",
+      name: t('testimonial3Name'),
+      role: t('testimonial3Role'),
+      comment: t('testimonial3Comment'),
       avatar: "https://randomuser.me/api/portraits/women/65.jpg",
       rating: 4
     }
@@ -54,26 +61,26 @@ const Home = ({ onShowTutorial }) => {
   const features = [
     {
       id: 1,
-      title: "Photo Capture",
-      description: "Easily take high-quality photos using your webcam, with customizable countdown and multi-shot options.",
+      title: t('photoCapture'),
+      description: t('photoCaptureDesc'),
       icon: "fa-camera"
     },
     {
       id: 2,
-      title: "Creative Filters",
-      description: "Apply a variety of professional filter effects including black and white, vintage, high contrast, and more to give your photos an artistic touch.",
+      title: t('creativeFilters'),
+      description: t('creativeFiltersDesc'),
       icon: "fa-wand-magic-sparkles"
     },
     {
       id: 3,
-      title: "Photo Strip Generation",
-      description: "Automatically combine your photos into classic photo strip layouts, perfectly capturing sequential moments.",
+      title: t('photoStripGeneration'),
+      description: t('photoStripGenerationDesc'),
       icon: "fa-images"
     },
     {
       id: 4,
-      title: "Easy Sharing",
-      description: "Download your photos or share directly to social media. Share with friends via QR code.",
+      title: t('easySharing'),
+      description: t('easySharingDesc'),
       icon: "fa-share-nodes"
     }
   ];
@@ -86,19 +93,56 @@ const Home = ({ onShowTutorial }) => {
     { id: 4, value: "15+", label: "Countries" }
   ];
 
+  // 工作流程步骤
+  const workflowSteps = [
+    {
+      number: 1,
+      title: t('workflowStep1'),
+      desc: t('workflowStep1Desc')
+    },
+    {
+      number: 2,
+      title: t('workflowStep2'),
+      desc: t('workflowStep2Desc')
+    },
+    {
+      number: 3,
+      title: t('workflowStep3'),
+      desc: t('workflowStep3Desc')
+    }
+  ];
+
+  // FAQ
+  const faqs = [
+    { q: t('faq1Q'), a: t('faq1A') },
+    { q: t('faq2Q'), a: t('faq2A') },
+    { q: t('faq3Q'), a: t('faq3A') },
+    { q: t('faq4Q'), a: t('faq4A') }
+  ];
+
   return (
     <div className="home-page">
       <header className="main-header">
-        <div className="container">
+        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Logo />
           <nav className="main-nav">
-            <a href="#features">Features</a>
-            <a href="#showcase">Gallery</a>
-            <a href="#testimonials">Reviews</a>
+            <a href="#features">{t('features')}</a>
+            <a href="#showcase">{t('gallery')}</a>
+            <a href="#testimonials">{t('reviews')}</a>
             <button onClick={onShowTutorial} className="nav-tutorial-btn">
-              Tutorial <i className="fas fa-play-circle"></i>
+              {t('tutorial')} <i className="fas fa-play-circle"></i>
             </button>
           </nav>
+          <div className="nav-right">
+            <LanguageSwitcher onSwitchLanguage={(lang) => {
+              localStorage.setItem('picapica_language', lang);
+              if (lang === 'zh') {
+                window.location.pathname = '/zh';
+              } else {
+                window.location.pathname = '/';
+              }
+            }} />
+          </div>
         </div>
       </header>
 
@@ -106,16 +150,16 @@ const Home = ({ onShowTutorial }) => {
       <section className="hero-section">
         <div className="container">
           <div className="hero-content">
-            <h1>Create Beautiful Photo Strips with <span className="highlight">PicapicaBooth</span></h1>
+            <h1>{t('heroTitle')}</h1>
             <p className="hero-description">
-              PicapicaBooth lets you easily capture, edit, and share stunning photos without professional equipment, anytime, anywhere. Join over 300,000 monthly users creating amazing memories!
+              {t('heroDescription')}
             </p>
             <div className="hero-buttons">
               <button onClick={handleGetStarted} className="btn btn-primary">
-                Get Started <i className="fas fa-arrow-right"></i>
+                {t('getStarted')} <i className="fas fa-arrow-right"></i>
               </button>
               <button onClick={onShowTutorial} className="btn btn-secondary">
-                View Tutorial <i className="fas fa-play-circle"></i>
+                {t('viewTutorial')} <i className="fas fa-play-circle"></i>
               </button>
             </div>
           </div>
@@ -132,7 +176,7 @@ const Home = ({ onShowTutorial }) => {
             {stats.map(stat => (
               <div key={stat.id} className="stat-item">
                 <h3>{stat.value}</h3>
-                <p>{stat.label}</p>
+                <p>{t(stat.label)}</p>
               </div>
             ))}
           </div>
@@ -143,8 +187,8 @@ const Home = ({ onShowTutorial }) => {
       <section className="features-section" id="features">
         <div className="container">
           <div className="section-header">
-            <h2>Powerful Features, Simple Interface</h2>
-            <p>PicapicaBooth offers professional-grade photo processing with an easy-to-use interface</p>
+            <h2>{t('powerfulFeatures')}</h2>
+            <p>{t('featuresIntro')}</p>
           </div>
           <div className="features-grid">
             {features.map(feature => (
@@ -164,25 +208,17 @@ const Home = ({ onShowTutorial }) => {
       <section className="workflow-section">
         <div className="container">
           <div className="section-header">
-            <h2>Three Simple Steps to Create Beautiful Photos</h2>
-            <p>No complex setup required, complete the entire process in minutes</p>
+            <h2>{t('workflowTitle')}</h2>
+            <p>{t('workflowIntro')}</p>
           </div>
           <div className="workflow-steps">
-            <div className="workflow-step">
-              <div className="step-number">1</div>
-              <h3>Take Photos</h3>
-              <p>Allow browser access to your camera, set a countdown, and automatically capture multiple photos</p>
-            </div>
-            <div className="workflow-step">
-              <div className="step-number">2</div>
-              <h3>Edit & Enhance</h3>
-              <p>Choose filters, adjust layout, add borders to make your photos more personalized</p>
-            </div>
-            <div className="workflow-step">
-              <div className="step-number">3</div>
-              <h3>Save & Share</h3>
-              <p>Download your photo strip or share directly to social media to share moments with friends</p>
-            </div>
+            {workflowSteps.map(step => (
+              <div className="workflow-step" key={step.number}>
+                <div className="step-number">{step.number}</div>
+                <h3>{step.title}</h3>
+                <p>{step.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -191,21 +227,21 @@ const Home = ({ onShowTutorial }) => {
       <section className="showcase-section" id="showcase">
         <div className="container">
           <div className="section-header">
-            <h2>Unlimited Creativity, Stunning Results</h2>
-            <p>Check out beautiful photo strips created by users with PicapicaBooth</p>
+            <h2>{t('showcaseTitle')}</h2>
+            <p>{t('showcaseIntro')}</p>
           </div>
           <div className="showcase-gallery">
             <div className="gallery-item">
-              <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt="Photo strip example 1" />
+              <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt={t('showcaseAlt1')} />
             </div>
             <div className="gallery-item">
-              <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt="Photo strip example 2" />
+              <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt={t('showcaseAlt2')} />
             </div>
             <div className="gallery-item">
-              <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt="Photo strip example 3" />
+              <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt={t('showcaseAlt3')} />
             </div>
             <div className="gallery-item">
-              <img src="https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt="Photo strip example 4" />
+              <img src="https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt={t('showcaseAlt4')} />
             </div>
           </div>
         </div>
@@ -215,8 +251,8 @@ const Home = ({ onShowTutorial }) => {
       <section className="testimonials-section" id="testimonials">
         <div className="container">
           <div className="section-header">
-            <h2>Real User Reviews</h2>
-            <p>Genuine feedback from our 300,000+ global users</p>
+            <h2>{t('testimonialsTitle')}</h2>
+            <p>{t('testimonialsIntro')}</p>
           </div>
           <div className="testimonials-container">
             {testimonials.map(testimonial => (
@@ -247,26 +283,16 @@ const Home = ({ onShowTutorial }) => {
       <section className="faq-section" id="faq">
         <div className="container">
           <div className="section-header">
-            <h2>Frequently Asked Questions</h2>
-            <p>Common questions about PicapicaBooth</p>
+            <h2>{t('faqTitle')}</h2>
+            <p>{t('faqIntro')}</p>
           </div>
           <div className="faq-container">
-            <div className="faq-item">
-              <h3>Is PicapicaBooth free to use?</h3>
-              <p>Yes, PicapicaBooth is completely free to use. Our online photo booth provides high-quality photo capture, editing, and sharing functionality at no cost.</p>
-            </div>
-            <div className="faq-item">
-              <h3>Do I need to install any software?</h3>
-              <p>No. PicapicaBooth is a web-based application that only requires a modern browser (such as Chrome, Firefox, Safari, or Edge) to access and use all features.</p>
-            </div>
-            <div className="faq-item">
-              <h3>Where are my photos stored?</h3>
-              <p>Your photos are only stored on your device unless you choose to share them. We don't store your photos on our servers, ensuring your privacy and security.</p>
-            </div>
-            <div className="faq-item">
-              <h3>Does PicapicaBooth support mobile devices?</h3>
-              <p>Yes, PicapicaBooth fully supports mobile devices. Our photo booth allows you to use the front camera on your smartphone or tablet to take and edit photos.</p>
-            </div>
+            {faqs.map((faq, idx) => (
+              <div className="faq-item" key={idx}>
+                <h3>{faq.q}</h3>
+                <p>{faq.a}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -275,10 +301,10 @@ const Home = ({ onShowTutorial }) => {
       <section className="cta-section">
         <div className="container">
           <div className="cta-content">
-            <h2>Ready to Create Your Photo Strip with PicapicaBooth?</h2>
-            <p>Start using PicapicaBooth now to capture and share your amazing moments!</p>
+            <h2>{t('ctaTitle')}</h2>
+            <p>{t('ctaDesc')}</p>
             <button onClick={handleGetStarted} className="btn btn-primary btn-large">
-              Get Started <i className="fas fa-arrow-right"></i>
+              {t('getStarted')} <i className="fas fa-arrow-right"></i>
             </button>
           </div>
         </div>
@@ -290,7 +316,7 @@ const Home = ({ onShowTutorial }) => {
           <div className="footer-content">
             <div className="footer-brand">
               <h3>PicapicaBooth</h3>
-              <p>Create beautiful photo strips with our online photo booth</p>
+              <p>{t('footerSlogan')}</p>
               <div className="social-links">
                 <a href="#" target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook"></i></a>
                 <a href="#" target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter"></i></a>
@@ -300,34 +326,33 @@ const Home = ({ onShowTutorial }) => {
             </div>
             <div className="footer-links">
               <div className="footer-links-column">
-                <h4>Product</h4>
+                <h4>{t('footerProduct')}</h4>
                 <ul>
-                  <li><a href="#features">Features</a></li>
-                  <li><a href="#showcase">Gallery</a></li>
-                  <li><a href="#testimonials">Reviews</a></li>
+                  <li><a href="#features">{t('features')}</a></li>
+                  <li><a href="#showcase">{t('gallery')}</a></li>
+                  <li><a href="#testimonials">{t('reviews')}</a></li>
                 </ul>
               </div>
               <div className="footer-links-column">
-                <h4>Support</h4>
+                <h4>{t('footerSupport')}</h4>
                 <ul>
-                  <li><a href="#faq">FAQ</a></li>
-                  <li><a href="/contact">Contact Us</a></li>
-                  <li><a href="/privacy-policy">Privacy Policy</a></li>
+                  <li><a href="#faq">{t('faq')}</a></li>
+                  <li><a href="/contact">{t('contactUs')}</a></li>
+                  <li><a href="/privacy-policy">{t('privacyPolicy')}</a></li>
                 </ul>
               </div>
               <div className="footer-links-column">
-                <h4>Company</h4>
+                <h4>{t('footerCompany')}</h4>
                 <ul>
-                  <li><a href="/about">About Us</a></li>
-                  <li><a href="https://blog.picapicabooth.app" target="_blank" rel="noopener noreferrer">Blog</a></li>
-                  <li><a href="/careers">Careers</a></li>
+                  <li><a href="/about">{t('aboutUs')}</a></li>
+                  <li><a href="https://blog.picapicabooth.app" target="_blank" rel="noopener noreferrer">{t('blog')}</a></li>
+                  <li><a href="/careers">{t('careers')}</a></li>
                 </ul>
               </div>
             </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; 2025 PicapicaBooth. All Rights Reserved.</p>
-    
+            <p>&copy; 2025 PicapicaBooth. {t('footerCopyright')}</p>
           </div>
         </div>
       </footer>
